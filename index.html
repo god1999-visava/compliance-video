@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDL-Gen Compliance Video</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --surface-0: #F7F8FA;
+    --surface-1: #FFFFFF;
+    --border: #E4E7EC;
+    --border-strong: #D0D5DD;
+    --text-primary: #101828;
+    --text-secondary: #667085;
+    --text-muted: #98A2B3;
+    --radius: 8px;
+
+    --blue-50: #E6F1FB;  --blue-600: #185FA5; --blue-800: #0C447C; --blue-900: #042C53;
+    --teal-50: #E1F5EE;  --teal-600: #0E8E6D; --teal-800: #085041; --teal-900: #04342C;
+    --purple-50: #EEEDFE;--purple-600: #5B4FDB; --purple-800: #3C3489; --purple-900: #26215C;
+    --coral-50: #FAECE7; --coral-600: #C24E22; --coral-800: #712B13; --coral-900: #4A1B0C;
+    --amber-50: #FDF3E1; --amber-600: #B87A0A; --amber-800: #7A5108; --amber-900: #4F3405;
+
+    --sidebar-w: 248px;
+    --topbar-h: 60px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--surface-0);
+    font-family: 'Inter', 'Noto Sans Lao', sans-serif;
+    color: var(--text-primary);
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    height: var(--topbar-h);
+    background: var(--surface-1);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 20px;
+  }
+  .menu-toggle {
+    background: none;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    color: var(--text-primary);
+    flex: none;
+  }
+  .menu-toggle:hover { background: var(--surface-0); }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex: none;
+    margin-right: 6px;
+  }
+  .brand .mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .brand .mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .brand .name {
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    line-height: 1.15;
+  }
+  .brand .name span { color: var(--blue-600); }
+  .brand .name .org { display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); letter-spacing: .02em; }
+
+  .search-wrap {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  .search-box {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-strong);
+    border-radius: 22px;
+    overflow: hidden;
+    background: var(--surface-1);
+  }
+  .search-box:focus-within {
+    border-color: var(--blue-600);
+    box-shadow: 0 0 0 3px var(--blue-50);
+  }
+  .search-box input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 10px 4px 10px 16px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text-primary);
+    background: transparent;
+  }
+  .search-box .search-icon-btn {
+    border: none;
+    background: var(--surface-0);
+    height: 100%;
+    width: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 17px;
+    border-left: 1px solid var(--border-strong);
+  }
+
+  .topbar-actions { display: flex; align-items: center; gap: 8px; flex: none; }
+  .btn {
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 20px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface-1);
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
+    transition: background .15s ease, transform .05s ease;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--surface-0); }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--blue-600); color: #fff; border: none; }
+  .btn-primary:hover { background: var(--blue-800); }
+
+  /* ---------- Layout shell ---------- */
+  .shell { display: flex; align-items: flex-start; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    width: var(--sidebar-w);
+    flex: none;
+    position: sticky;
+    top: var(--topbar-h);
+    height: calc(100vh - var(--topbar-h));
+    overflow-y: auto;
+    background: var(--surface-1);
+    border-right: 1px solid var(--border);
+    padding: 14px 10px;
+    transition: margin-left .18s ease;
+  }
+  .sidebar.collapsed { margin-left: calc(-1 * var(--sidebar-w)); }
+
+  .side-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--text-muted);
+    padding: 10px 12px 6px;
+  }
+  .side-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+  }
+  .side-link i { font-size: 18px; width: 20px; text-align: center; color: var(--text-secondary); flex: none; }
+  .side-link span.lbl { flex: 1; line-height: 1.3; }
+  .side-link span.count { font-size: 11px; color: var(--text-muted); flex: none; }
+  .side-link:hover { background: var(--surface-0); }
+  .side-link.active { background: var(--blue-50); border-left-color: var(--blue-600); }
+  .side-link.active i, .side-link.active span.lbl { color: var(--blue-800); font-weight: 600; }
+
+  .sidebar hr { border: none; border-top: 1px solid var(--border); margin: 10px 4px; }
+
+  /* ---------- Main ---------- */
+  .main { flex: 1; min-width: 0; padding: 20px 24px 48px; }
+
+  .page-heading { margin: 4px 2px 14px; }
+  .page-heading h1 { font-size: 19px; font-weight: 700; margin: 0 0 3px; }
+  .page-heading p { font-size: 13px; color: var(--text-secondary); margin: 0; }
+
+  /* stat strip */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .stat-card { border-radius: 10px; padding: 12px 14px; }
+  .stat-card p.label { font-size: 12px; margin: 0 0 3px; }
+  .stat-card p.value { font-size: 22px; font-weight: 700; margin: 0; }
+  .stat-blue { background: var(--blue-50); } .stat-blue p.label{color:var(--blue-600);} .stat-blue p.value{color:var(--blue-900);}
+  .stat-teal { background: var(--teal-50); } .stat-teal p.label{color:var(--teal-800);} .stat-teal p.value{color:var(--teal-900);}
+  .stat-purple { background: var(--purple-50); } .stat-purple p.label{color:var(--purple-800);} .stat-purple p.value{color:var(--purple-900);}
+  .stat-coral { background: var(--coral-50); } .stat-coral p.label{color:var(--coral-800);} .stat-coral p.value{color:var(--coral-900);}
+
+  /* chip filter row */
+  .chip-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 2px 2px 14px;
+    margin-bottom: 6px;
+    scrollbar-width: none;
+  }
+  .chip-row::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 18px;
+    background: var(--surface-1);
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+  .chip:hover { background: var(--surface-0); }
+  .chip.active { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
+
+  /* video grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px 16px;
+  }
+  .card { cursor: pointer; }
+  .thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 30px;
+  }
+  .thumb img.cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .thumb .cover-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(16,24,40,0.18);
+    transition: background .15s ease;
+  }
+  .card:hover .thumb .cover-scrim { background: rgba(16,24,40,0.32); }
+  .thumb .play {
+    position: relative;
+    z-index: 1;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(255,255,255,0.28);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px;
+    backdrop-filter: blur(2px);
+    transition: transform .15s ease, background .15s ease;
+  }
+  .card:hover .thumb .play { transform: scale(1.1); background: rgba(255,255,255,0.4); }
+  .thumb .duration {
+    position: absolute;
+    z-index: 1;
+    right: 6px; bottom: 6px;
+    background: rgba(16,24,40,0.82);
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .thumb .yt-btn {
+    position: absolute;
+    z-index: 1;
+    top: 6px; right: 6px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(16,24,40,0.55);
+    border: none;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity .15s ease, background .15s ease;
+  }
+  .card:hover .thumb .yt-btn { opacity: 1; }
+  .thumb .yt-btn:hover { background: rgba(16,24,40,0.8); }
+
+  .thumb-blue { background: linear-gradient(135deg, var(--blue-600), var(--blue-900)); }
+  .thumb-teal { background: linear-gradient(135deg, var(--teal-600), var(--teal-900)); }
+  .thumb-purple { background: linear-gradient(135deg, var(--purple-600), var(--purple-900)); }
+  .thumb-coral { background: linear-gradient(135deg, var(--coral-600), var(--coral-900)); }
+  .thumb-amber { background: linear-gradient(135deg, var(--amber-600), var(--amber-900)); }
+
+  .meta { display: flex; gap: 10px; margin-top: 9px; }
+  .meta .avatar {
+    flex: none; width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 15px;
+  }
+  .meta .title { font-size: 14px; font-weight: 600; line-height: 1.35; margin: 0 0 3px; }
+  .meta .sub { font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.4; }
+  .meta .sub.views { display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+  .meta .sub.views i { font-size: 13px; color: var(--text-muted); }
+  .meta .tag-inline { color: var(--text-secondary); }
+
+  /* ---------- Video player modal ---------- */
+  .player-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(16,24,40,0.72);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .player-overlay.open { display: flex; }
+  .player-box {
+    width: 100%;
+    max-width: 880px;
+    background: var(--surface-1);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(16,24,40,0.35);
+  }
+  .player-frame-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+  }
+  .player-frame-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  .player-info {
+    padding: 14px 18px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .player-info h3 { font-size: 15px; font-weight: 600; margin: 0 0 4px; }
+  .player-info p { font-size: 12px; color: var(--text-secondary); margin: 0; }
+  .player-close {
+    flex: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    background: var(--surface-1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    color: var(--text-primary);
+  }
+  .player-close:hover { background: var(--surface-0); }
+  .player-yt-link {
+    font-size: 12px;
+    color: var(--blue-600);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .player-yt-link:hover { text-decoration: underline; }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+  }
+  .empty-state i { font-size: 34px; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .empty-state p { margin: 0; font-size: 14px; }
+
+  @media (max-width: 1100px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 860px) {
+    .sidebar { position: fixed; left: 0; top: var(--topbar-h); z-index: 25; box-shadow: 4px 0 16px rgba(16,24,40,0.12); margin-left: calc(-1 * var(--sidebar-w)); }
+    .sidebar.mobile-open { margin-left: 0; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .stats { grid-template-columns: 1fr; }
+    .brand .name { display: none; }
+  }
+  @media (max-width: 520px) {
+    .grid { grid-template-columns: 1fr; }
+    .topbar { padding: 0 12px; gap: 8px; }
+    .btn span.btn-label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="menu-toggle" id="menu-toggle" aria-label="ເປີດ/ປິດເມນູ"><i class="ti ti-menu-2"></i></button>
+  <div class="brand">
+    <div class="mark"><img src="assets/edlgen-logo.png" alt="EDL-Gen"></div>
+    <div class="name"><span class="org">EDL-Gen</span>Compliance <span>Video</span></div>
+  </div>
+  <div class="search-wrap">
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="ຄົ້ນຫາວິດີໂອ...">
+      <button class="search-icon-btn" aria-label="ຄົ້ນຫາ"><i class="ti ti-search"></i></button>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn" id="new-category-btn"><i class="ti ti-folder-plus"></i><span class="btn-label">ໝວດໝູ່ໃໝ່</span></button>
+    <button class="btn btn-primary" id="upload-btn"><i class="ti ti-link"></i><span class="btn-label">ເພີ່ມລິ້ງວິດີໂອ</span></button>
+  </div>
+</div>
+
+<div class="shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="side-link active" data-filter="all">
+      <i class="ti ti-home"></i><span class="lbl">ໜ້າຫຼັກ</span>
+    </div>
+    <div class="side-section-label">ໝວດໝູ່</div>
+    <div class="side-link" data-filter="company">
+      <i class="ti ti-building"></i><span class="lbl">Company Profile</span><span class="count">3</span>
+    </div>
+    <div class="side-link" data-filter="employee">
+      <i class="ti ti-gavel"></i><span class="lbl">ຂໍ້ກຳນົດ ແລະ ລະບຽບຂອງພະນັກງານ</span><span class="count">4</span>
+    </div>
+    <div class="side-link" data-filter="guide">
+      <i class="ti ti-book"></i><span class="lbl">ຄຳແນະນຳ</span><span class="count">3</span>
+    </div>
+    <div class="side-link" data-filter="policy">
+      <i class="ti ti-shield-check"></i><span class="lbl">ນະໂຍບາຍຂອງ ຜ-ຟຟລ</span><span class="count">3</span>
+    </div>
+    <div class="side-link" data-filter="listed">
+      <i class="ti ti-building-bank"></i><span class="lbl">ບໍລິສັດຈົດທະບຽນ</span><span class="count">3</span>
+    </div>
+    <hr>
+    <div class="side-link" data-filter="all" style="pointer-events:none; opacity:.7;">
+      <i class="ti ti-video"></i><span class="lbl" style="font-size:12px; color:var(--text-secondary);">16 ວິດີໂອ</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-heading">
+      <h1>ຄັງວິດີໂອຄວາມສອດຄ່ອງບໍລິສັດ</h1>
+      <p>ຈັດການ ແລະ ດາວໂຫລດວິດີໂອຄວາມສອດຄ່ອງທັງໝົດຂອງບໍລິສັດ</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card stat-blue"><p class="label">ວິດີໂອທັງໝົດ</p><p class="value">16</p></div>
+      <div class="stat-card stat-teal"><p class="label">ໝວດໝູ່</p><p class="value">5</p></div>
+      <div class="stat-card stat-coral"><p class="label">ຈຳນວນຜູ້ເຂົ້າຊົມ</p><p class="value" id="stat-views">0</p></div>
+    </div>
+
+    <div class="chip-row" id="chip-row">
+      <button class="chip active" data-filter="all">ທັງໝົດ</button>
+      <button class="chip" data-filter="company">Company Profile</button>
+      <button class="chip" data-filter="employee">ຂໍ້ກຳນົດ &amp; ລະບຽບພະນັກງານ</button>
+      <button class="chip" data-filter="guide">ຄຳແນະນຳ</button>
+      <button class="chip" data-filter="policy">ນະໂຍບາຍ ຜ-ຟຟລ</button>
+      <button class="chip" data-filter="listed">ບໍລິສັດຈົດທະບຽນ</button>
+    </div>
+
+    <div class="grid" id="video-grid">
+      <!-- Cards injected by JS from VIDEOS data -->
+    </div>
+  </main>
+
+</div>
+
+<div class="player-overlay" id="player-overlay">
+  <div class="player-box">
+    <div class="player-frame-wrap">
+      <iframe id="player-iframe" src="" title="video player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="player-info">
+      <div>
+        <h3 id="player-title"></h3>
+        <p id="player-meta"></p>
+        <a id="player-yt-link" class="player-yt-link" href="#" target="_blank" rel="noopener">
+          <i class="ti ti-brand-youtube"></i> ເປີດເບິ່ງໃນ YouTube
+        </a>
+      </div>
+      <button class="player-close" id="player-close" aria-label="ປິດ"><i class="ti ti-x"></i></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var CATEGORY_META = {
+    company:  { label: 'Company Profile',                         thumb: 'thumb-blue',   avatar: 'var(--blue-600)',   icon: 'ti-building' },
+    employee: { label: 'ຂໍ້ກຳນົດ ແລະ ລະບຽບຂອງພະນັກງານ',            thumb: 'thumb-teal',   avatar: 'var(--teal-600)',   icon: 'ti-gavel' },
+    guide:    { label: 'ຄຳແນະນຳ',                                   thumb: 'thumb-purple', avatar: 'var(--purple-600)', icon: 'ti-book' },
+    policy:   { label: 'ນະໂຍບາຍຂອງ ຜ-ຟຟລ',                         thumb: 'thumb-coral',  avatar: 'var(--coral-600)',  icon: 'ti-shield-check' },
+    listed:   { label: 'ບໍລິສັດຈົດທະບຽນ',                           thumb: 'thumb-amber',  avatar: 'var(--amber-600)',  icon: 'ti-building-bank' }
+  };
+
+  var VIDEOS = [
+    { title: 'ພາບລວມບໍລິສັດ', cat: 'company', duration: '8 ນາທີ 52 ວິນາທີ', date: '7 ສິງຫາ 2026', views: 486, url: 'https://www.youtube.com/watch?v=7WMXJJGyaDQ' },
+    { title: 'ເປີດຫ້ອງວາງສະແດງມູນເຊື້ອຂອງເຂື່ອນໄຟຟ້ານໍ້າງື່ມ 1 ຢ່າງເປັນທາງການ', cat: 'company', duration: '3 ນາທີ 40 ວິນາທີ', date: '7 ສິງຫາ 2026', views: 312, url: 'https://www.youtube.com/watch?v=NC0ts63RS8w' },
+    { title: 'EDL-Gen: ຜະລິດພະລັງງານເພື່ອປະເທດລາວ ຢ່າງຍືນຍົງ', cat: 'company', duration: '8 ນາທີ', date: '2 ມິຖຸນາ 2026', views: 259, url: 'https://www.youtube.com/watch?v=CMSus-_9Dug&list=PLtiGlSrjXkcbDEfXE8i-cu5YnHiwWOxkN&index=3' },
+
+    { title: 'ຄວາມປອດໄພຂອງເຂື່ອນໄຟຟ້າ ແມ່ນຫຍັງ?', cat: 'employee', duration: '4 ນາທີ 22 ວິນາທີ', date: '2 ມິຖຸນາ 2026', views: 941, url: 'https://www.youtube.com/watch?v=mR04OaWVxeI' },
+    { title: 'EDL-Gen ຕິດຕາມ ແລະ ກວດກາຄຸນນະພາບນ້ຳ ເພື່ອສ້າງຄວາມໝັ້ນໃຈດ້ານຄວາມປອດໄພ ແລະ ສິ່ງແວດລ້ອມ', cat: 'employee', duration: '3 ນາທີ 20 ວິນາທີ', date: '25 ພຶດສະພາ 2026', views: 604, url: 'https://www.youtube.com/watch?v=Bg1NmxirPQI' },
+    { title: 'ຜ-ຟຟລ ຈັດກິດຈະກຳ “ປູກຕົ້ນໄມ້ ແລະ ປ່ອຍປາ ປະຈຳປີ 2026”', cat: 'employee', duration: '3 ນາທີ 42 ວິນາທີ', date: '19 ພຶດສະພາ 2026', views: 478, url: 'https://www.youtube.com/watch?v=8zbeXr8W-0U' },
+
+    { title: 'EDL-Gen: 9 ເຫດຜົນສຳຄັນທີ່ພາເຮົາກ້າວສູ່ຄຸນນະພາບລະດັບໂລກ!', cat: 'guide', duration: '2 ນາທີ 20 ວິນາທີ', date: '14 ພຶດສະພາ 2026', views: 388, url: 'https://www.youtube.com/watch?v=jfeQI6gr7hM' },
+    { title: '12 ສິ່ງ ທີ່ທ່ານອາດຈະບໍ່ຮູ້ ກ່ຽວກັບເຂື່ອນໄຟຟ້ານໍ້າງື່ມ-1 ມີຫຍັງແດ່?', cat: 'guide', duration: '2 ນາທີ 40 ວິນາທີ', date: '5 ພຶດສະພາ 2026', views: 297, url: 'https://www.youtube.com/watch?v=nWHqEAvQHs8' },
+    { title: 'ຄໍາແນະນຳການລາຍງານເຫດການ', cat: 'guide', duration: '6 ນາທີ', date: '22 ເມສາ 2026', views: 214, url: 'https://youtu.be/YOUTUBE_ID_10' },
+
+    { title: 'ນະໂຍບາຍການປົກປ້ອງຂໍ້ມູນ', cat: 'policy', duration: '21 ນາທີ', date: '28 ເມສາ 2026', views: 356, url: 'https://youtu.be/YOUTUBE_ID_11' },
+    { title: 'ນະໂຍບາຍຕ້ານການສໍ້ລາດບັງຫຼວງ', cat: 'policy', duration: '15 ນາທີ', date: '10 ເມສາ 2026', views: 231, url: 'https://youtu.be/YOUTUBE_ID_12' },
+    { title: 'ນະໂຍບາຍການບໍລິຫານຄວາມສ່ຽງ', cat: 'policy', duration: '13 ນາທີ', date: '2 ເມສາ 2026', views: 189, url: 'https://youtu.be/YOUTUBE_ID_13' },
+
+    { title: 'ລະບຽບບໍລິສັດຈົດທະບຽນ', cat: 'listed', duration: '17 ນາທີ', date: '30 ມີນາ 2026', views: 275, url: 'https://youtu.be/YOUTUBE_ID_14' },
+    { title: 'ການເປີດເຜີຍຂໍ້ມູນຕໍ່ຕະຫຼາດຫຼັກຊັບ', cat: 'listed', duration: '10 ນາທີ', date: '18 ມີນາ 2026', views: 162, url: 'https://youtu.be/YOUTUBE_ID_15' },
+    { title: 'ຈັນຍາບັນນັກລົງທຶນສໍາພັນ', cat: 'listed', duration: '8 ນາທີ', date: '6 ມີນາ 2026', views: 140, url: 'https://youtu.be/YOUTUBE_ID_16' }
+  ];
+
+  function formatViews(n) {
+    if (n >= 1000) return (n / 1000).toFixed(1).replace('.0', '') + 'K';
+    return String(n);
+  }
+
+  // Accepts any pasted YouTube URL format (watch?v=, youtu.be/, embed/, shorts/)
+  // and returns just the video ID.
+  function extractYouTubeId(url) {
+    if (!url) return '';
+    var patterns = [
+      /(?:youtube\.com\/watch\?v=)([^&?/]+)/,
+      /(?:youtu\.be\/)([^&?/]+)/,
+      /(?:youtube\.com\/embed\/)([^&?/]+)/,
+      /(?:youtube\.com\/shorts\/)([^&?/]+)/
+    ];
+    for (var i = 0; i < patterns.length; i++) {
+      var m = url.match(patterns[i]);
+      if (m) return m[1];
+    }
+    return url; // fallback: assume they pasted a bare ID
+  }
+
+  var grid = document.getElementById('video-grid');
+
+  function renderGrid(filter, query) {
+    grid.innerHTML = '';
+    var q = (query || '').trim().toLowerCase();
+    var shown = 0;
+
+    VIDEOS.forEach(function (v) {
+      var matchesFilter = (filter === 'all' || v.cat === filter);
+      var matchesQuery = q === '' || v.title.toLowerCase().indexOf(q) !== -1;
+      if (!matchesFilter || !matchesQuery) return;
+      shown++;
+
+      var meta = CATEGORY_META[v.cat];
+      var index = VIDEOS.indexOf(v);
+      var id = extractYouTubeId(v.url);
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.setAttribute('data-index', index);
+      card.innerHTML =
+        '<div class="thumb ' + meta.thumb + '">' +
+          '<img class="cover" src="https://img.youtube.com/vi/' + id + '/hqdefault.jpg" alt="' + v.title + '" loading="lazy" onerror="this.remove()">' +
+          '<div class="cover-scrim"></div>' +
+          '<a class="yt-btn" aria-label="ເປີດໃນ YouTube" href="' + v.url + '" target="_blank" rel="noopener"><i class="ti ti-brand-youtube"></i></a>' +
+          '<div class="play"><i class="ti ti-player-play"></i></div>' +
+          '<div class="duration">' + v.duration + '</div>' +
+        '</div>' +
+        '<div class="meta">' +
+          '<div class="avatar" style="background:' + meta.avatar + '"><i class="ti ' + meta.icon + '"></i></div>' +
+          '<div>' +
+            '<p class="title">' + v.title + '</p>' +
+            '<p class="sub"><span class="tag-inline">' + meta.label + '</span> • ' + v.date + '</p>' +
+            '<p class="sub views"><i class="ti ti-eye"></i>' + formatViews(v.views) + ' ຄັ້ງ</p>' +
+          '</div>' +
+        '</div>';
+      grid.appendChild(card);
+    });
+
+    if (shown === 0) {
+      grid.innerHTML = '<div class="empty-state"><i class="ti ti-video-off"></i><p>ບໍ່ພົບວິດີໂອທີ່ກົງກັບການຄົ້ນຫາ</p></div>';
+    }
+
+    // clicking a card (outside the YouTube link button) opens the in-page player
+    grid.querySelectorAll('.card').forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('.yt-btn')) return; // let the direct YouTube link work normally
+        var idx = parseInt(card.getAttribute('data-index'), 10);
+        openPlayer(VIDEOS[idx]);
+      });
+    });
+  }
+
+  // ---------- Video player modal ----------
+  var overlay = document.getElementById('player-overlay');
+  var iframe = document.getElementById('player-iframe');
+  var playerTitle = document.getElementById('player-title');
+  var playerMeta = document.getElementById('player-meta');
+  var playerYtLink = document.getElementById('player-yt-link');
+
+  function openPlayer(v) {
+    var meta = CATEGORY_META[v.cat];
+    var id = extractYouTubeId(v.url);
+    iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+    playerTitle.textContent = v.title;
+    playerMeta.textContent = meta.label + ' • ' + v.date + ' • ' + formatViews(v.views) + ' ຄັ້ງ';
+    playerYtLink.href = v.url;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePlayer() {
+    overlay.classList.remove('open');
+    iframe.src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('player-close').addEventListener('click', closePlayer);
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) closePlayer();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closePlayer();
+  });
+
+  var currentFilter = 'all';
+
+  function setActiveFilter(filter) {
+    currentFilter = filter;
+    document.querySelectorAll('.side-link[data-filter]').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-filter') === filter);
+    });
+    document.querySelectorAll('.chip[data-filter]').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-filter') === filter);
+    });
+    renderGrid(currentFilter, document.getElementById('search-input').value);
+  }
+
+  document.querySelectorAll('.side-link[data-filter]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      setActiveFilter(el.getAttribute('data-filter'));
+      if (window.innerWidth <= 860) {
+        document.getElementById('sidebar').classList.remove('mobile-open');
+      }
+    });
+  });
+
+  document.querySelectorAll('.chip[data-filter]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      setActiveFilter(el.getAttribute('data-filter'));
+    });
+  });
+
+  document.getElementById('search-input').addEventListener('input', function (e) {
+    renderGrid(currentFilter, e.target.value);
+  });
+
+  document.getElementById('menu-toggle').addEventListener('click', function () {
+    var sidebar = document.getElementById('sidebar');
+    if (window.innerWidth <= 860) {
+      sidebar.classList.toggle('mobile-open');
+    } else {
+      sidebar.classList.toggle('collapsed');
+    }
+  });
+
+  document.getElementById('upload-btn').addEventListener('click', function () {
+    alert('ເປີດປ່ອງເພີ່ມລິ້ງວິດີໂອຈາກ YouTube (ເຊື່ອມຕໍ່ລະບົບເພີ່ມລິ້ງຕົວຈິງຢູ່ບ່ອນນີ້)');
+  });
+  document.getElementById('new-category-btn').addEventListener('click', function () {
+    alert('ເປີດປ່ອງສ້າງໝວດໝູ່ໃໝ່');
+  });
+
+  var totalViews = VIDEOS.reduce(function (sum, v) { return sum + v.views; }, 0);
+  document.getElementById('stat-views').textContent = formatViews(totalViews);
+
+  renderGrid('all', '');
+</script>
+
+</body>
+</html>

@@ -418,6 +418,165 @@
   .empty-state i { font-size: 34px; color: var(--text-muted); margin-bottom: 10px; display: block; }
   .empty-state p { margin: 0; font-size: 14px; }
 
+  /* ---------- Home: compact 2-column card per category ---------- */
+  .home-sections {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .home-section {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    transition: box-shadow .15s ease, border-color .15s ease;
+  }
+  .home-section:hover { box-shadow: 0 4px 14px rgba(16,24,40,0.06); border-color: var(--border-strong); }
+  .home-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .home-section-header .home-section-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin: 0;
+    min-width: 0;
+    flex: 0 1 auto;
+    overflow: hidden;
+  }
+  .home-section-header .home-section-title .lbl-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .home-section-header .home-section-title .cat-icon {
+    width: 26px; height: 26px; border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 13px; flex: none;
+  }
+  .home-section-header .see-all {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--blue-600);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: none;
+    white-space: nowrap;
+  }
+  .home-section-header .see-all:hover { text-decoration: underline; }
+  .home-section-header .see-all i { font-size: 13px; }
+
+  /* Compact video preview row used inside a home-section card */
+  .compact-card { display: flex; gap: 12px; cursor: pointer; }
+  .compact-card .thumb { width: 128px; flex: none; border-radius: 8px; font-size: 20px; aspect-ratio: 16/9; }
+  .compact-card .compact-body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 5px; }
+  .compact-card .compact-body .title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .compact-card .compact-body .sub { font-size: 11.5px; color: var(--text-secondary); margin: 0; display: flex; align-items: center; gap: 4px; }
+  .compact-card .compact-body .sub i { font-size: 12.5px; color: var(--text-muted); }
+
+  @media (max-width: 900px) {
+    .home-sections { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Category view: featured video + folder ---------- */
+  .category-view { display: none; }
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--text-muted);
+    margin: 0 0 10px 2px;
+  }
+  .featured-video { margin-bottom: 22px; }
+  .featured-card {
+    display: flex;
+    gap: 18px;
+    cursor: pointer;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    transition: box-shadow .15s ease, border-color .15s ease;
+  }
+  .featured-card:hover { box-shadow: 0 4px 16px rgba(16,24,40,0.08); border-color: var(--border-strong); }
+  .featured-card .thumb { width: 280px; flex: none; border-radius: 8px; font-size: 40px; }
+  .featured-card .featured-body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; padding: 4px 6px; }
+  .featured-card .featured-tag {
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .featured-card .featured-body .title { font-size: 17px; font-weight: 700; margin: 0 0 8px; line-height: 1.4; }
+  .featured-card .featured-body .sub { font-size: 13px; color: var(--text-secondary); margin: 0 0 4px; display: flex; align-items: center; gap: 6px; }
+  .featured-card .featured-body .sub i { font-size: 14px; color: var(--text-muted); }
+
+  .folder-section { margin-top: 6px; }
+  .folder-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 16px;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .folder-card:hover { background: var(--surface-0); }
+  .folder-card .folder-icon {
+    flex: none;
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px;
+    background: var(--amber-50);
+    color: var(--amber-600);
+  }
+  .folder-card .folder-text { flex: 1; min-width: 0; }
+  .folder-card .folder-text p.name { font-size: 13.5px; font-weight: 600; margin: 0 0 2px; }
+  .folder-card .folder-text p.count { font-size: 12px; color: var(--text-secondary); margin: 0; }
+  .folder-card .folder-chevron { flex: none; font-size: 17px; color: var(--text-muted); transition: transform .15s ease; }
+  .folder-card.open .folder-chevron { transform: rotate(90deg); }
+
+  .folder-grid {
+    display: none;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px 16px;
+    margin-top: 16px;
+  }
+  .folder-grid.open { display: grid; }
+
+  @media (max-width: 860px) {
+    .featured-card { flex-direction: column; }
+    .featured-card .thumb { width: 100%; }
+    .folder-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 520px) {
+    .folder-grid { grid-template-columns: 1fr; }
+  }
+
   @media (max-width: 1100px) {
     .grid { grid-template-columns: repeat(3, 1fr); }
   }
@@ -462,24 +621,10 @@
       <i class="ti ti-home"></i><span class="lbl">ໜ້າຫຼັກ</span>
     </div>
     <div class="side-section-label">ໝວດໝູ່</div>
-    <div class="side-link" data-filter="company">
-      <i class="ti ti-building"></i><span class="lbl">Company Profile</span><span class="count">3</span>
-    </div>
-    <div class="side-link" data-filter="employee">
-      <i class="ti ti-gavel"></i><span class="lbl">ຂໍ້ກຳນົດ ແລະ ລະບຽບຂອງພະນັກງານ</span><span class="count">4</span>
-    </div>
-    <div class="side-link" data-filter="guide">
-      <i class="ti ti-book"></i><span class="lbl">ຄຳແນະນຳ</span><span class="count">3</span>
-    </div>
-    <div class="side-link" data-filter="policy">
-      <i class="ti ti-shield-check"></i><span class="lbl">ນະໂຍບາຍຂອງ ຜ-ຟຟລ</span><span class="count">3</span>
-    </div>
-    <div class="side-link" data-filter="listed">
-      <i class="ti ti-building-bank"></i><span class="lbl">ບໍລິສັດຈົດທະບຽນ</span><span class="count">3</span>
-    </div>
+    <div id="sidebar-categories"><!-- category links injected by JS from CATEGORY_META --></div>
     <hr>
     <div class="side-link" data-filter="all" style="pointer-events:none; opacity:.7;">
-      <i class="ti ti-video"></i><span class="lbl" style="font-size:12px; color:var(--text-secondary);">16 ວິດີໂອ</span>
+      <i class="ti ti-video"></i><span class="lbl" id="sidebar-total-label" style="font-size:12px; color:var(--text-secondary);"></span>
     </div>
   </aside>
 
@@ -490,22 +635,32 @@
     </div>
 
     <div class="stats">
-      <div class="stat-card stat-blue"><p class="label">ວິດີໂອທັງໝົດ</p><p class="value">16</p></div>
-      <div class="stat-card stat-teal"><p class="label">ໝວດໝູ່</p><p class="value">5</p></div>
+      <div class="stat-card stat-blue"><p class="label">ວິດີໂອທັງໝົດ</p><p class="value" id="stat-total-videos">0</p></div>
+      <div class="stat-card stat-teal"><p class="label">ໝວດໝູ່</p><p class="value" id="stat-total-cats">0</p></div>
       <div class="stat-card stat-coral"><p class="label">ຈຳນວນຜູ້ເຂົ້າຊົມ</p><p class="value" id="stat-views">0</p></div>
     </div>
 
     <div class="chip-row" id="chip-row">
       <button class="chip active" data-filter="all">ທັງໝົດ</button>
-      <button class="chip" data-filter="company">Company Profile</button>
-      <button class="chip" data-filter="employee">ຂໍ້ກຳນົດ &amp; ລະບຽບພະນັກງານ</button>
-      <button class="chip" data-filter="guide">ຄຳແນະນຳ</button>
-      <button class="chip" data-filter="policy">ນະໂຍບາຍ ຜ-ຟຟລ</button>
-      <button class="chip" data-filter="listed">ບໍລິສັດຈົດທະບຽນ</button>
+      <div id="chip-categories" style="display:contents"><!-- category chips injected by JS from CATEGORY_META --></div>
     </div>
 
     <div class="grid" id="video-grid">
-      <!-- Cards injected by JS from VIDEOS data -->
+      <!-- Cards injected by JS from VIDEOS data (used for search results) -->
+    </div>
+
+    <div class="home-sections" id="home-sections">
+      <!-- One row per category injected by JS: heading + 1 latest video -->
+    </div>
+
+    <div class="category-view" id="category-view">
+      <div class="featured-video">
+        <p class="section-label">ວິດີໂອລ່າສຸດ</p>
+        <div id="featured-video-slot"><!-- featured card injected by JS --></div>
+      </div>
+      <div class="folder-section" id="folder-section">
+        <!-- folder card + grid injected by JS -->
+      </div>
     </div>
   </main>
 
@@ -530,14 +685,41 @@
 </div>
 
 <script>
+  // ============================================================
+  //  ວິທີເພີ່ມ "ໝວດໝູ່" ໃໝ່ (New category)
+  //  ------------------------------------------------------------
+  //  1) ເພີ່ມ 1 ແຖວໃໝ່ໃນ CATEGORY_META ຂ້າງລຸ່ມນີ້ (key ຕ້ອງເປັນ
+  //     ຄຳສັບພາສາອັງກິດ ບໍ່ມີວັກ ບໍ່ມີເຄື່ອງໝາຍພິເສດ ເຊັ່ນ "training")
+  //       key: {
+  //         label: 'ຊື່ໝວດໝູ່ທີ່ຈະສະແດງ',
+  //         thumb: 'thumb-blue' | 'thumb-teal' | 'thumb-purple' | 'thumb-coral' | 'thumb-amber',
+  //         avatar: 'var(--blue-600)' | 'var(--teal-600)' | 'var(--purple-600)' | 'var(--coral-600)' | 'var(--amber-600)',
+  //         icon: ชื่อ icon จาก https://tabler.io/icons (พิมพ์ "ti-" นำหน้า)
+  //       }
+  //  2) ບໍ່ຕ້ອງໄປແກ້ sidebar ຫຼື chip ບ່ອນອື່ນ — ລະບົບຈະສ້າງໃຫ້ອັດຕະໂນມັດ
+  //  3) ຢ່າລືມເພີ່ມວິດີໂອຢ່າງໜ້ອຍ 1 ຄລິບໃນ VIDEOS ທີ່ໃຊ້ cat: 'key' ດຽວກັນ
+  //     ບໍ່ດັ່ງນັ້ນ ໝວດໝູ່ຈະຫວ່າງເປົ່າ
+  // ============================================================
   var CATEGORY_META = {
     company:  { label: 'Company Profile',                         thumb: 'thumb-blue',   avatar: 'var(--blue-600)',   icon: 'ti-building' },
     employee: { label: 'ຂໍ້ກຳນົດ ແລະ ລະບຽບຂອງພະນັກງານ',            thumb: 'thumb-teal',   avatar: 'var(--teal-600)',   icon: 'ti-gavel' },
     guide:    { label: 'ຄຳແນະນຳ',                                   thumb: 'thumb-purple', avatar: 'var(--purple-600)', icon: 'ti-book' },
     policy:   { label: 'ນະໂຍບາຍຂອງ ຜ-ຟຟລ',                         thumb: 'thumb-coral',  avatar: 'var(--coral-600)',  icon: 'ti-shield-check' },
     listed:   { label: 'ບໍລິສັດຈົດທະບຽນ',                           thumb: 'thumb-amber',  avatar: 'var(--amber-600)',  icon: 'ti-building-bank' }
+    // ตัวอย่างเพิ่มหมวดใหม่:
+    // training: { label: 'ຝຶກອົບຮົມ', thumb: 'thumb-blue', avatar: 'var(--blue-600)', icon: 'ti-school' }
   };
 
+  // ============================================================
+  //  ວິທີເພີ່ມ "ວິດີໂອ" ໃໝ່ (New video)
+  //  ------------------------------------------------------------
+  //  ຄັດລອກແຖວໃດແຖວໜຶ່ງຂ້າງລຸ່ມນີ້ ແລ້ວແກ້ຂໍ້ມູນ:
+  //    { title: 'ຊື່ວິດີໂອ', cat: 'company', duration: '5 ນາທີ', date: '14 ສິງຫາ 2026', views: 0, url: 'https://www.youtube.com/watch?v=XXXXXXXXXXX' }
+  //  - cat        : ຕ້ອງກົງກັບ key ໃນ CATEGORY_META ຂ້າງເທິງ (ເຊັ່ນ 'company', 'employee', ...)
+  //  - url        : ວາງລິ້ງ YouTube ແບບໃດກໍໄດ້ (watch?v=, youtu.be/, shorts/ ລ້ວນໃຊ້ໄດ້)
+  //  - ວິດີໂອລ່າສຸດຂອງແຕ່ລະໝວດ = ວິດີໂອທຳອິດທີ່ພົບຂອງ cat ນັ້ນ (ຕາມລຳດັບໃນ array)
+  //    ດັ່ງນັ້ນ ຄວນ "ວາງວິດີໂອໃໝ່ໄວ້ເທິງສຸດ" ຂອງແຕ່ລະກຸ່ມ cat ນັ້ນໆ
+  // ============================================================
   var VIDEOS = [
     { title: 'ພາບລວມບໍລິສັດ', cat: 'company', duration: '8 ນາທີ 52 ວິນາທີ', date: '7 ສິງຫາ 2026', views: 486, url: 'https://www.youtube.com/watch?v=7WMXJJGyaDQ' },
     { title: 'ເປີດຫ້ອງວາງສະແດງມູນເຊື້ອຂອງເຂື່ອນໄຟຟ້ານໍ້າງື່ມ 1 ຢ່າງເປັນທາງການ', cat: 'company', duration: '3 ນາທີ 40 ວິນາທີ', date: '7 ສິງຫາ 2026', views: 312, url: 'https://www.youtube.com/watch?v=NC0ts63RS8w' },
@@ -558,7 +740,41 @@
     { title: 'ລະບຽບບໍລິສັດຈົດທະບຽນ', cat: 'listed', duration: '17 ນາທີ', date: '30 ມີນາ 2026', views: 275, url: 'https://youtu.be/YOUTUBE_ID_14' },
     { title: 'ການເປີດເຜີຍຂໍ້ມູນຕໍ່ຕະຫຼາດຫຼັກຊັບ', cat: 'listed', duration: '10 ນາທີ', date: '18 ມີນາ 2026', views: 162, url: 'https://youtu.be/YOUTUBE_ID_15' },
     { title: 'ຈັນຍາບັນນັກລົງທຶນສໍາພັນ', cat: 'listed', duration: '8 ນາທີ', date: '6 ມີນາ 2026', views: 140, url: 'https://youtu.be/YOUTUBE_ID_16' }
+
+    // ตัวอย่างเพิ่มวิดีโอใหม่ (คัดลอกไปวางแล้วแก้ข้อมูล อย่าลืมใส่ , คั่นก่อนบรรทัดนี้):
+    // ,{ title: 'ຊື່ວິດີໂອໃໝ່', cat: 'company', duration: '5 ນາທີ', date: '14 ສິງຫາ 2026', views: 0, url: 'https://www.youtube.com/watch?v=XXXXXXXXXXX' }
   ];
+
+  // ---------- Build sidebar links + filter chips automatically from CATEGORY_META ----------
+  // ไม่ต้องแก้ตรงนี้ — ระบบนี้จะอ่าน CATEGORY_META ด้านบนแล้วสร้าง sidebar/chip ให้เอง
+  function renderSidebarAndChips() {
+    var sidebarContainer = document.getElementById('sidebar-categories');
+    var chipContainer = document.getElementById('chip-categories');
+    sidebarContainer.innerHTML = '';
+    chipContainer.innerHTML = '';
+
+    Object.keys(CATEGORY_META).forEach(function (cat) {
+      var meta = CATEGORY_META[cat];
+      var count = VIDEOS.filter(function (v) { return v.cat === cat; }).length;
+
+      var link = document.createElement('div');
+      link.className = 'side-link';
+      link.setAttribute('data-filter', cat);
+      link.innerHTML = '<i class="ti ' + meta.icon + '"></i><span class="lbl">' + meta.label + '</span><span class="count">' + count + '</span>';
+      sidebarContainer.appendChild(link);
+
+      var chip = document.createElement('button');
+      chip.className = 'chip';
+      chip.setAttribute('data-filter', cat);
+      chip.textContent = meta.label;
+      chipContainer.appendChild(chip);
+    });
+
+    document.getElementById('sidebar-total-label').textContent = VIDEOS.length + ' ວິດີໂອ';
+    document.getElementById('stat-total-videos').textContent = VIDEOS.length;
+    document.getElementById('stat-total-cats').textContent = Object.keys(CATEGORY_META).length;
+  }
+  renderSidebarAndChips();
 
   function formatViews(n) {
     if (n >= 1000) return (n / 1000).toFixed(1).replace('.0', '') + 'K';
@@ -583,10 +799,57 @@
   }
 
   var grid = document.getElementById('video-grid');
+  var categoryView = document.getElementById('category-view');
+  var featuredSlot = document.getElementById('featured-video-slot');
+  var folderSection = document.getElementById('folder-section');
+  var pageHeadingH1 = document.querySelector('.page-heading h1');
+  var pageHeadingP = document.querySelector('.page-heading p');
+  var DEFAULT_HEADING = { title: pageHeadingH1.textContent, sub: pageHeadingP.textContent };
 
-  function renderGrid(filter, query) {
+  // Videos are stored newest-first within each category, so the first
+  // match for a category is always its latest video.
+  function getCategoryVideos(cat) {
+    return VIDEOS.filter(function (v) { return v.cat === cat; });
+  }
+
+  function buildCardHTML(v, index) {
+    var meta = CATEGORY_META[v.cat];
+    var id = extractYouTubeId(v.url);
+    return (
+      '<div class="thumb ' + meta.thumb + '">' +
+        '<img class="cover" src="https://img.youtube.com/vi/' + id + '/hqdefault.jpg" alt="' + v.title + '" loading="lazy" onerror="this.remove()">' +
+        '<div class="cover-scrim"></div>' +
+        '<a class="yt-btn" aria-label="ເປີດໃນ YouTube" href="' + v.url + '" target="_blank" rel="noopener"><i class="ti ti-brand-youtube"></i></a>' +
+        '<div class="play"><i class="ti ti-player-play"></i></div>' +
+        '<div class="duration">' + v.duration + '</div>' +
+      '</div>' +
+      '<div class="meta">' +
+        '<div class="avatar" style="background:' + meta.avatar + '"><i class="ti ' + meta.icon + '"></i></div>' +
+        '<div>' +
+          '<p class="title">' + v.title + '</p>' +
+          '<p class="sub"><span class="tag-inline">' + meta.label + '</span> • ' + v.date + '</p>' +
+          '<p class="sub views"><i class="ti ti-eye"></i>' + formatViews(v.views) + ' ຄັ້ງ</p>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function makeCardEl(v, extraClass) {
+    var index = VIDEOS.indexOf(v);
+    var card = document.createElement('div');
+    card.className = 'card' + (extraClass ? ' ' + extraClass : '');
+    card.setAttribute('data-index', index);
+    card.innerHTML = buildCardHTML(v, index);
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('.yt-btn')) return; // let the direct YouTube link work normally
+      openPlayer(v);
+    });
+    return card;
+  }
+
+  // ---------- Flat grid (used for search results, in any scope) ----------
+  function renderFlatGrid(filter, q) {
     grid.innerHTML = '';
-    var q = (query || '').trim().toLowerCase();
     var shown = 0;
 
     VIDEOS.forEach(function (v) {
@@ -594,44 +857,185 @@
       var matchesQuery = q === '' || v.title.toLowerCase().indexOf(q) !== -1;
       if (!matchesFilter || !matchesQuery) return;
       shown++;
-
-      var meta = CATEGORY_META[v.cat];
-      var index = VIDEOS.indexOf(v);
-      var id = extractYouTubeId(v.url);
-      var card = document.createElement('div');
-      card.className = 'card';
-      card.setAttribute('data-index', index);
-      card.innerHTML =
-        '<div class="thumb ' + meta.thumb + '">' +
-          '<img class="cover" src="https://img.youtube.com/vi/' + id + '/hqdefault.jpg" alt="' + v.title + '" loading="lazy" onerror="this.remove()">' +
-          '<div class="cover-scrim"></div>' +
-          '<a class="yt-btn" aria-label="ເປີດໃນ YouTube" href="' + v.url + '" target="_blank" rel="noopener"><i class="ti ti-brand-youtube"></i></a>' +
-          '<div class="play"><i class="ti ti-player-play"></i></div>' +
-          '<div class="duration">' + v.duration + '</div>' +
-        '</div>' +
-        '<div class="meta">' +
-          '<div class="avatar" style="background:' + meta.avatar + '"><i class="ti ' + meta.icon + '"></i></div>' +
-          '<div>' +
-            '<p class="title">' + v.title + '</p>' +
-            '<p class="sub"><span class="tag-inline">' + meta.label + '</span> • ' + v.date + '</p>' +
-            '<p class="sub views"><i class="ti ti-eye"></i>' + formatViews(v.views) + ' ຄັ້ງ</p>' +
-          '</div>' +
-        '</div>';
-      grid.appendChild(card);
+      grid.appendChild(makeCardEl(v));
     });
 
     if (shown === 0) {
       grid.innerHTML = '<div class="empty-state"><i class="ti ti-video-off"></i><p>ບໍ່ພົບວິດີໂອທີ່ກົງກັບການຄົ້ນຫາ</p></div>';
     }
+  }
 
-    // clicking a card (outside the YouTube link button) opens the in-page player
-    grid.querySelectorAll('.card').forEach(function (card) {
-      card.addEventListener('click', function (e) {
-        if (e.target.closest('.yt-btn')) return; // let the direct YouTube link work normally
-        var idx = parseInt(card.getAttribute('data-index'), 10);
-        openPlayer(VIDEOS[idx]);
+  // ---------- Home ("ທັງໝົດ"): 1 row per category, 1 latest video per row ----------
+  var homeSectionsEl = document.getElementById('home-sections');
+
+  function renderHomeSections() {
+    homeSectionsEl.innerHTML = '';
+
+    Object.keys(CATEGORY_META).forEach(function (cat) {
+      var meta = CATEGORY_META[cat];
+      var vids = getCategoryVideos(cat);
+      if (vids.length === 0) return;
+      var latest = vids[0];
+
+      var section = document.createElement('div');
+      section.className = 'home-section';
+
+      var header = document.createElement('div');
+      header.className = 'home-section-header';
+      header.innerHTML =
+        '<p class="home-section-title">' +
+          '<span class="cat-icon" style="background:' + meta.avatar + '"><i class="ti ' + meta.icon + '"></i></span>' +
+          '<span class="lbl-text">' + meta.label + '</span>' +
+        '</p>' +
+        (vids.length > 1
+          ? '<span class="see-all" data-goto="' + cat + '">ເບິ່ງທັງໝົດ (' + vids.length + ')<i class="ti ti-chevron-right"></i></span>'
+          : '');
+      section.appendChild(header);
+
+      var id = extractYouTubeId(latest.url);
+      var ccard = document.createElement('div');
+      ccard.className = 'compact-card';
+      ccard.innerHTML =
+        '<div class="thumb ' + meta.thumb + '">' +
+          '<img class="cover" src="https://img.youtube.com/vi/' + id + '/hqdefault.jpg" alt="' + latest.title + '" loading="lazy" onerror="this.remove()">' +
+          '<div class="cover-scrim"></div>' +
+          '<a class="yt-btn" aria-label="ເປີດໃນ YouTube" href="' + latest.url + '" target="_blank" rel="noopener"><i class="ti ti-brand-youtube"></i></a>' +
+          '<div class="play"><i class="ti ti-player-play"></i></div>' +
+          '<div class="duration">' + latest.duration + '</div>' +
+        '</div>' +
+        '<div class="compact-body">' +
+          '<p class="title">' + latest.title + '</p>' +
+          '<p class="sub"><i class="ti ti-calendar"></i>' + latest.date + '</p>' +
+          '<p class="sub"><i class="ti ti-eye"></i>' + formatViews(latest.views) + ' ຄັ້ງ</p>' +
+        '</div>';
+      ccard.addEventListener('click', function (e) {
+        if (e.target.closest('.yt-btn')) return;
+        openPlayer(latest);
+      });
+      section.appendChild(ccard);
+
+      homeSectionsEl.appendChild(section);
+    });
+
+    // "ເບິ່ງທັງໝົດ" jumps straight into that category's page
+    homeSectionsEl.querySelectorAll('.see-all[data-goto]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        setActiveFilter(el.getAttribute('data-goto'));
       });
     });
+  }
+
+  // ---------- Category page: featured latest video + "ວີດີໂອທີ່ຜ່ານມາ" folder ----------
+  function renderCategoryPage(cat) {
+    var meta = CATEGORY_META[cat];
+    var vids = getCategoryVideos(cat);
+
+    if (vids.length === 0) {
+      featuredSlot.innerHTML = '<div class="empty-state"><i class="ti ti-video-off"></i><p>ຍັງບໍ່ມີວິດີໂອໃນໝວດໝູ່ນີ້</p></div>';
+      folderSection.innerHTML = '';
+      return;
+    }
+
+    var latest = vids[0];
+    var past = vids.slice(1);
+
+    // Featured (latest) video
+    featuredSlot.innerHTML = '';
+    var fcard = document.createElement('div');
+    fcard.className = 'featured-card';
+    var id = extractYouTubeId(latest.url);
+    fcard.innerHTML =
+      '<div class="thumb ' + meta.thumb + '">' +
+        '<img class="cover" src="https://img.youtube.com/vi/' + id + '/hqdefault.jpg" alt="' + latest.title + '" loading="lazy" onerror="this.remove()">' +
+        '<div class="cover-scrim"></div>' +
+        '<a class="yt-btn" aria-label="ເປີດໃນ YouTube" href="' + latest.url + '" target="_blank" rel="noopener"><i class="ti ti-brand-youtube"></i></a>' +
+        '<div class="play"><i class="ti ti-player-play"></i></div>' +
+        '<div class="duration">' + latest.duration + '</div>' +
+      '</div>' +
+      '<div class="featured-body">' +
+        '<p class="title">' + latest.title + '</p>' +
+        '<p class="sub"><i class="ti ' + meta.icon + '"></i>' + meta.label + '</p>' +
+        '<p class="sub"><i class="ti ti-calendar"></i>' + latest.date + '</p>' +
+        '<p class="sub"><i class="ti ti-eye"></i>' + formatViews(latest.views) + ' ຄັ້ງ</p>' +
+      '</div>';
+    fcard.addEventListener('click', function (e) {
+      if (e.target.closest('.yt-btn')) return;
+      openPlayer(latest);
+    });
+    featuredSlot.appendChild(fcard);
+
+    // "ວີດີໂອທີ່ຜ່ານມາ" (past videos) folder
+    folderSection.innerHTML = '';
+    if (past.length === 0) {
+      return; // nothing else to show, only one video exists in this category
+    }
+
+    var folderCard = document.createElement('div');
+    folderCard.className = 'folder-card';
+    folderCard.id = 'folder-toggle';
+    folderCard.innerHTML =
+      '<div class="folder-icon"><i class="ti ti-folder"></i></div>' +
+      '<div class="folder-text">' +
+        '<p class="name">ວີດີໂອທີ່ຜ່ານມາ</p>' +
+        '<p class="count">' + past.length + ' ວິດີໂອ</p>' +
+      '</div>' +
+      '<i class="ti ti-chevron-right folder-chevron"></i>';
+
+    var folderGrid = document.createElement('div');
+    folderGrid.className = 'folder-grid';
+    folderGrid.id = 'folder-grid';
+    past.forEach(function (v) {
+      folderGrid.appendChild(makeCardEl(v));
+    });
+
+    folderCard.addEventListener('click', function () {
+      var isOpen = folderCard.classList.toggle('open');
+      folderGrid.classList.toggle('open', isOpen);
+      var icon = folderCard.querySelector('.folder-icon i');
+      icon.className = isOpen ? 'ti ti-folder-open' : 'ti ti-folder';
+    });
+
+    folderSection.appendChild(folderCard);
+    folderSection.appendChild(folderGrid);
+  }
+
+  function updateHeading(filter) {
+    if (filter === 'all') {
+      pageHeadingH1.textContent = DEFAULT_HEADING.title;
+      pageHeadingP.textContent = DEFAULT_HEADING.sub;
+    } else {
+      var meta = CATEGORY_META[filter];
+      pageHeadingH1.textContent = meta.label;
+      pageHeadingP.textContent = 'ວິດີໂອລ່າສຸດ ແລະ ວິດີໂອທີ່ຜ່ານມາໃນໝວດໝູ່ນີ້';
+    }
+  }
+
+  function renderGrid(filter, query) {
+    var q = (query || '').trim().toLowerCase();
+
+    if (q !== '') {
+      // Search overrides the featured/folder/home layout - show a flat, filterable grid.
+      categoryView.style.display = 'none';
+      homeSectionsEl.style.display = 'none';
+      grid.style.display = 'grid';
+      updateHeading(filter);
+      renderFlatGrid(filter, q);
+      return;
+    }
+
+    if (filter === 'all') {
+      categoryView.style.display = 'none';
+      grid.style.display = 'none';
+      homeSectionsEl.style.display = 'grid';
+      updateHeading(filter);
+      renderHomeSections();
+    } else {
+      grid.style.display = 'none';
+      homeSectionsEl.style.display = 'none';
+      categoryView.style.display = 'block';
+      updateHeading(filter);
+      renderCategoryPage(filter);
+    }
   }
 
   // ---------- Video player modal ----------
@@ -708,10 +1112,20 @@
   });
 
   document.getElementById('upload-btn').addEventListener('click', function () {
-    alert('ເປີດປ່ອງເພີ່ມລິ້ງວິດີໂອຈາກ YouTube (ເຊື່ອມຕໍ່ລະບົບເພີ່ມລິ້ງຕົວຈິງຢູ່ບ່ອນນີ້)');
+    alert(
+      'ປຸ່ມນີ້ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ລະບົບເພີ່ມລິ້ງອັດຕະໂນມັດ (ເວັບນີ້ບໍ່ມີຖານຂໍ້ມູນ)\n\n' +
+      'ວິທີເພີ່ມວິດີໂອ: ເປີດໄຟລ໌ index.html → ຄົ້ນຫາ "var VIDEOS" → ' +
+      'ຄັດລອກແຖວໃດແຖວໜຶ່ງແລ້ວແກ້ title, cat, url, date ຕາມວິດີໂອໃໝ່ ' +
+      '→ ບັນທຶກ ແລະ deploy ຂຶ້ນໃໝ່'
+    );
   });
   document.getElementById('new-category-btn').addEventListener('click', function () {
-    alert('ເປີດປ່ອງສ້າງໝວດໝູ່ໃໝ່');
+    alert(
+      'ປຸ່ມນີ້ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ລະບົບສ້າງໝວດໝູ່ອັດຕະໂນມັດ (ເວັບນີ້ບໍ່ມີຖານຂໍ້ມູນ)\n\n' +
+      'ວິທີເພີ່ມໝວດໝູ່: ເປີດໄຟລ໌ index.html → ຄົ້ນຫາ "var CATEGORY_META" → ' +
+      'ເພີ່ມ 1 ແຖວໃໝ່ (key, label, thumb, avatar, icon) ' +
+      '→ ຢ່າລືມເພີ່ມວິດີໂອທີ່ໃຊ້ cat ດຽວກັນໃນ VIDEOS ດ້ວຍ → ບັນທຶກ ແລະ deploy ຂຶ້ນໃໝ່'
+    );
   });
 
   var totalViews = VIDEOS.reduce(function (sum, v) { return sum + v.views; }, 0);

@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDL-Gen Compliance Video</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.44.0/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* ---------- Canvas & ambient glow ---------- */
+    --bg-canvas: #070B12;
+    --bg-glow-1: radial-gradient(circle at 14% -8%, rgba(58,124,255,0.22), transparent 52%);
+    --bg-glow-2: radial-gradient(circle at 88% 2%, rgba(217,167,39,0.13), transparent 48%);
+    --bg-glow-3: radial-gradient(circle at 50% 105%, rgba(20,184,166,0.10), transparent 55%);
+
+    --surface-0: #0C121D;
+    --surface-1: #121A28;
+    --surface-2: #1B2536;
+    --surface-glass: rgba(15,21,33,0.72);
+
+    --border: rgba(255,255,255,0.07);
+    --border-strong: rgba(255,255,255,0.14);
+    --radius: 10px;
+    --radius-lg: 16px;
+
+    --text-primary: #F3F6FB;
+    --text-secondary: #94A2B8;
+    --text-muted: #5C6A80;
+
+    --gold: #D9A727;
+    --gold-bright: #F0C24B;
+
+    --blue-50: rgba(58,124,255,0.14);   --blue-600: #3A7CFF; --blue-800: #1E4FCC; --blue-900: #0B2258;
+    --teal-50: rgba(20,184,166,0.14);   --teal-600: #16BFAC; --teal-800: #0D8E80; --teal-900: #063B34;
+    --purple-50: rgba(139,92,246,0.14); --purple-600: #8B5CF6; --purple-800: #6633D6; --purple-900: #2A1361;
+    --coral-50: rgba(224,112,58,0.14);  --coral-600: #E0703A; --coral-800: #A9501F; --coral-900: #3E1E0D;
+    --amber-50: rgba(217,167,39,0.14);  --amber-600: #D9A727; --amber-800: #9C7714; --amber-900: #40300A;
+
+    --sidebar-w: 264px;
+    --topbar-h: 68px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background-color: var(--bg-canvas);
+    background-image: var(--bg-glow-1), var(--bg-glow-2), var(--bg-glow-3);
+    background-attachment: fixed, fixed, fixed;
+    min-height: 100vh;
+    font-family: 'Inter', 'Noto Sans Lao', sans-serif;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
+
+  ::selection { background: var(--blue-600); color: #fff; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 10px; border: 2px solid var(--bg-canvas); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+  :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 2px; border-radius: 4px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    height: var(--topbar-h);
+    background: var(--surface-glass);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 22px;
+  }
+  .menu-toggle {
+    background: none;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    color: var(--text-secondary);
+    flex: none;
+    transition: background .15s ease, color .15s ease;
+  }
+  .menu-toggle:hover { background: var(--surface-1); color: var(--text-primary); }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    flex: none;
+    margin-right: 6px;
+  }
+  .brand .mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(160deg, var(--surface-2), var(--surface-0));
+    box-shadow: 0 0 0 1px var(--border-strong), 0 0 0 4px rgba(217,167,39,0.10), 0 4px 14px rgba(0,0,0,0.45);
+  }
+  .brand .mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .brand .name {
+    font-family: 'Manrope', 'Noto Sans Lao', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    line-height: 1.2;
+    color: var(--text-primary);
+  }
+  .brand .name span {
+    background: linear-gradient(90deg, var(--gold-bright), var(--blue-600));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .brand .name .org {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .search-wrap {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  .search-box {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-strong);
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--surface-1);
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .search-box:focus-within {
+    border-color: var(--blue-600);
+    box-shadow: 0 0 0 4px var(--blue-50);
+  }
+  .search-box input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 11px 4px 11px 18px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text-primary);
+    background: transparent;
+  }
+  .search-box input::placeholder { color: var(--text-muted); }
+  .search-box .search-icon-btn {
+    border: none;
+    background: var(--surface-2);
+    height: 100%;
+    width: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 17px;
+    border-left: 1px solid var(--border-strong);
+  }
+
+  .topbar-actions { display: flex; align-items: center; gap: 8px; flex: none; }
+  .btn {
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 22px;
+    padding: 9px 17px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--surface-1);
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
+    transition: background .15s ease, transform .05s ease, border-color .15s ease;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--surface-2); border-color: var(--border-strong); }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-800));
+    color: #fff;
+    border: none;
+    box-shadow: 0 8px 20px rgba(58,124,255,0.32);
+  }
+  .btn-primary:hover { filter: brightness(1.08); box-shadow: 0 10px 24px rgba(58,124,255,0.42); }
+
+  /* ---------- Layout shell ---------- */
+  .shell { display: flex; align-items: flex-start; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    width: var(--sidebar-w);
+    flex: none;
+    position: sticky;
+    top: var(--topbar-h);
+    height: calc(100vh - var(--topbar-h));
+    overflow-y: auto;
+    background: var(--surface-0);
+    border-right: 1px solid var(--border);
+    padding: 18px 12px;
+    transition: margin-left .18s ease;
+  }
+  .sidebar.collapsed { margin-left: calc(-1 * var(--sidebar-w)); }
+
+  .side-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text-muted);
+    padding: 16px 12px 8px;
+  }
+  .side-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 12px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: background .15s ease, color .15s ease;
+  }
+  .side-link i { font-size: 18px; width: 20px; text-align: center; color: var(--text-muted); flex: none; transition: color .15s ease; }
+  .side-link span.lbl { flex: 1; line-height: 1.3; }
+  .side-link span.count { font-size: 11px; color: var(--text-muted); flex: none; }
+  .side-link:hover { background: var(--surface-1); color: var(--text-primary); }
+  .side-link.active {
+    background: linear-gradient(90deg, var(--blue-50), transparent);
+    border-left-color: var(--gold-bright);
+  }
+  .side-link.active i, .side-link.active span.lbl { color: var(--text-primary); font-weight: 700; }
+  .side-link.active i { color: var(--blue-600); }
+
+  .sidebar hr { border: none; border-top: 1px solid var(--border); margin: 12px 4px; }
+
+  /* ---------- Main ---------- */
+  .main { flex: 1; min-width: 0; padding: 26px 28px 56px; }
+
+  .page-heading { margin: 4px 2px 18px; }
+  .page-heading .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 8px;
+  }
+  .page-heading .eyebrow i { font-size: 13px; }
+  .page-heading h1 {
+    font-family: 'Manrope', 'Noto Sans Lao', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin: 0 0 5px;
+    color: var(--text-primary);
+  }
+  .page-heading p { font-size: 13.5px; color: var(--text-secondary); margin: 0; }
+
+  /* stat strip */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .stat-card {
+    border-radius: var(--radius-lg);
+    padding: 15px 18px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-top: 3px solid transparent;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(0,0,0,0.36); }
+  .stat-card p.label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin: 0 0 6px; color: var(--text-secondary); }
+  .stat-card p.value { font-family: 'Manrope', sans-serif; font-size: 25px; font-weight: 800; margin: 0; color: var(--text-primary); }
+  .stat-blue   { border-top-color: var(--blue-600); }
+  .stat-teal   { border-top-color: var(--teal-600); }
+  .stat-purple { border-top-color: var(--purple-600); }
+  .stat-coral  { border-top-color: var(--gold); }
+
+  /* chip filter row */
+  .chip-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 2px 2px 16px;
+    margin-bottom: 8px;
+    scrollbar-width: none;
+  }
+  .chip-row::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 16px;
+    border-radius: 20px;
+    background: var(--surface-1);
+    border: 1px solid var(--border-strong);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .chip:hover { background: var(--surface-2); color: var(--text-primary); }
+  .chip.active {
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-800));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 6px 16px rgba(58,124,255,0.32);
+  }
+
+  /* video grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px 18px;
+  }
+  .card { cursor: pointer; }
+  .thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 30px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease;
+  }
+  .card:hover .thumb { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(0,0,0,0.5); border-color: var(--border-strong); }
+  .thumb img.cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .thumb .cover-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(6,9,15,0) 55%, rgba(6,9,15,0.55) 100%);
+    transition: background .15s ease;
+  }
+  .card:hover .thumb .cover-scrim { background: linear-gradient(180deg, rgba(6,9,15,0.05) 40%, rgba(6,9,15,0.6) 100%); }
+  .thumb .play {
+    position: relative;
+    z-index: 1;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(255,255,255,0.16);
+    border: 1px solid rgba(255,255,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px;
+    backdrop-filter: blur(4px);
+    transition: transform .15s ease, background .15s ease;
+  }
+  .card:hover .thumb .play { transform: scale(1.1); background: rgba(255,255,255,0.28); }
+  .thumb .duration {
+    position: absolute;
+    z-index: 1;
+    right: 8px; bottom: 8px;
+    background: rgba(6,9,15,0.82);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+  .thumb .yt-btn {
+    position: absolute;
+    z-index: 1;
+    top: 8px; right: 8px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(6,9,15,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity .15s ease, background .15s ease;
+  }
+  .card:hover .thumb .yt-btn { opacity: 1; }
+  .thumb .yt-btn:hover { background: rgba(0,0,0,0.85); }
+
+  .thumb-blue   { background: linear-gradient(155deg, var(--blue-600), var(--blue-900)); }
+  .thumb-teal   { background: linear-gradient(155deg, var(--teal-600), var(--teal-900)); }
+  .thumb-purple { background: linear-gradient(155deg, var(--purple-600), var(--purple-900)); }
+  .thumb-coral  { background: linear-gradient(155deg, var(--coral-600), var(--coral-900)); }
+  .thumb-amber  { background: linear-gradient(155deg, var(--amber-600), var(--amber-900)); }
+
+  .meta { display: flex; gap: 11px; margin-top: 10px; }
+  .meta .avatar {
+    flex: none; width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 15px;
+    box-shadow: 0 0 0 3px var(--bg-canvas);
+  }
+  .meta .title { font-size: 14px; font-weight: 600; line-height: 1.4; margin: 0 0 4px; color: var(--text-primary); }
+  .meta .sub { font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.4; }
+  .meta .sub.views { display: flex; align-items: center; gap: 4px; margin-top: 3px; }
+  .meta .sub.views i { font-size: 13px; color: var(--text-muted); }
+  .meta .tag-inline { color: var(--text-secondary); font-weight: 500; }
+
+  /* ---------- Video player modal ---------- */
+  .player-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4,6,10,0.8);
+    backdrop-filter: blur(6px);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .player-overlay.open { display: flex; }
+  .player-box {
+    width: 100%;
+    max-width: 880px;
+    background: var(--surface-1);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  }
+  .player-frame-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+  }
+  .player-frame-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  .player-info {
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .player-info h3 { font-size: 15.5px; font-weight: 700; margin: 0 0 4px; color: var(--text-primary); }
+  .player-info p { font-size: 12px; color: var(--text-secondary); margin: 0; }
+  .player-close {
+    flex: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    color: var(--text-primary);
+  }
+  .player-close:hover { background: var(--surface-2); border-color: var(--gold-bright); }
+  .player-yt-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue-600);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+  }
+  .player-yt-link:hover { text-decoration: underline; }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 64px 20px;
+    color: var(--text-secondary);
+  }
+  .empty-state i { font-size: 34px; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .empty-state p { margin: 0; font-size: 14px; }
+
+  /* ---------- Home: compact 2-column card per category ---------- */
+  .home-sections {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .home-section {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+    transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
+  }
+  .home-section:hover { box-shadow: 0 16px 34px rgba(0,0,0,0.4); border-color: var(--border-strong); transform: translateY(-2px); }
+  .home-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 13px;
+  }
+  .home-section-header .home-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin: 0;
+    min-width: 0;
+    flex: 0 1 auto;
+    overflow: hidden;
+    color: var(--text-primary);
+  }
+  .home-section-header .home-section-title .lbl-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .home-section-header .home-section-title .cat-icon {
+    width: 27px; height: 27px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 13px; flex: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+  }
+  .home-section-header .see-all {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: none;
+    white-space: nowrap;
+  }
+  .home-section-header .see-all:hover { text-decoration: underline; }
+  .home-section-header .see-all i { font-size: 13px; }
+
+  /* Compact video preview row used inside a home-section card */
+  .compact-card { display: flex; gap: 12px; cursor: pointer; }
+  .compact-card .thumb { width: 128px; flex: none; border-radius: 9px; font-size: 20px; aspect-ratio: 16/9; }
+  .compact-card .compact-body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 5px; }
+  .compact-card .compact-body .title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+    color: var(--text-primary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .compact-card .compact-body .sub { font-size: 11.5px; color: var(--text-secondary); margin: 0; display: flex; align-items: center; gap: 4px; }
+  .compact-card .compact-body .sub i { font-size: 12.5px; color: var(--text-muted); }
+
+  @media (max-width: 900px) {
+    .home-sections { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Category view: featured video + folder ---------- */
+  .category-view { display: none; }
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text-muted);
+    margin: 0 0 12px 2px;
+  }
+  .featured-video { margin-bottom: 26px; }
+  .featured-card {
+    display: flex;
+    gap: 20px;
+    cursor: pointer;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+    transition: box-shadow .18s ease, border-color .18s ease, transform .18s ease;
+  }
+  .featured-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.45); border-color: var(--border-strong); transform: translateY(-2px); }
+  .featured-card .thumb { width: 300px; flex: none; border-radius: 10px; font-size: 40px; }
+  .featured-card .featured-body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; padding: 4px 8px; }
+  .featured-card .featured-tag {
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 9px;
+  }
+  .featured-card .featured-body .title { font-family: 'Manrope', 'Noto Sans Lao', sans-serif; font-size: 18px; font-weight: 700; margin: 0 0 10px; line-height: 1.4; color: var(--text-primary); }
+  .featured-card .featured-body .sub { font-size: 13px; color: var(--text-secondary); margin: 0 0 5px; display: flex; align-items: center; gap: 6px; }
+  .featured-card .featured-body .sub i { font-size: 14px; color: var(--text-muted); }
+
+  .folder-section { margin-top: 8px; }
+  .folder-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .folder-card:hover { background: var(--surface-2); border-color: var(--border-strong); }
+  .folder-card .folder-icon {
+    flex: none;
+    width: 42px; height: 42px;
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px;
+    background: var(--amber-50);
+    color: var(--gold-bright);
+  }
+  .folder-card .folder-text { flex: 1; min-width: 0; }
+  .folder-card .folder-text p.name { font-size: 13.5px; font-weight: 700; margin: 0 0 2px; color: var(--text-primary); }
+  .folder-card .folder-text p.count { font-size: 12px; color: var(--text-secondary); margin: 0; }
+  .folder-card .folder-chevron { flex: none; font-size: 17px; color: var(--text-muted); transition: transform .15s ease; }
+  .folder-card.open .folder-chevron { transform: rotate(90deg); color: var(--gold-bright); }
+
+  .folder-grid {
+    display: none;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px 18px;
+    margin-top: 18px;
+  }
+  .folder-grid.open { display: grid; }
+
+  @media (max-width: 860px) {
+    .featured-card { flex-direction: column; }
+    .featured-card .thumb { width: 100%; }
+    .folder-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 520px) {
+    .folder-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 1100px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 860px) {
+    .sidebar { position: fixed; left: 0; top: var(--topbar-h); z-index: 25; box-shadow: 4px 0 24px rgba(0,0,0,0.5); margin-left: calc(-1 * var(--sidebar-w)); }
+    .sidebar.mobile-open { margin-left: 0; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .stats { grid-template-columns: 1fr; }
+    .brand .name { display: none; }
+  }
+  @media (max-width: 520px) {
+    .grid { grid-template-columns: 1fr; }
+    .topbar { padding: 0 12px; gap: 8px; }
+    .btn span.btn-label { display: none; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="menu-toggle" id="menu-toggle" aria-label="ເປີດ/ປິດເມນູ"><i class="ti ti-menu-2"></i></button>
+  <div class="brand">
+    <div class="mark"><img src="assets/edlgen-logo.png" alt="EDL-Gen"></div>
+    <div class="name"><span class="org">EDL-Gen</span>Compliance <span>Video</span></div>
+  </div>
+  <div class="search-wrap">
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="ຄົ້ນຫາວິດີໂອ...">
+      <button class="search-icon-btn" aria-label="ຄົ້ນຫາ"><i class="ti ti-search"></i></button>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn" id="new-category-btn"><i class="ti ti-folder-plus"></i><span class="btn-label">ໝວດໝູ່ໃໝ່</span></button>
+    <button class="btn btn-primary" id="upload-btn"><i class="ti ti-link"></i><span class="btn-label">ເພີ່ມລິ້ງວິດີໂອ</span></button>
+  </div>
+</div>
+
+<div class="shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="side-link active" data-filter="all">
+      <i class="ti ti-home"></i><span class="lbl">ໜ້າຫຼັກ</span>
+    </div>
+    <div class="side-section-label">ໝວດໝູ່</div>
+    <div id="sidebar-categories"><!-- category links injected by JS from CATEGORY_META --></div>
+    <hr>
+    <div class="side-link" data-filter="all" style="pointer-events:none; opacity:.7;">
+      <i class="ti ti-video"></i><span class="lbl" id="sidebar-total-label" style="font-size:12px; color:var(--text-secondary);"></span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-heading">
+      <span class="eyebrow"><i class="ti ti-shield-check"></i>EDL-Gen Compliance Library</span>
+      <h1>ຄັງວິດີໂອຄວາມສອດຄ່ອງບໍລິສັດ</h1>
+      <p>ຈັດການ ແລະ ດາວໂຫລດວິດີໂອຄວາມສອດຄ່ອງທັງໝົດຂອງບໍລິສັດ</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card stat-blue"><p class="label">ວິດີໂອທັງໝົດ</p><p class="value" id="stat-total-videos">0</p></div>
+      <div class="stat-card stat-teal"><p class="label">ໝວດໝູ່</p><p class="value" id="stat-total-cats">0</p></div>
+      <div class="stat-card stat-coral"><p class="label">ຈຳນວນຜູ້ເຂົ້າຊົມ</p><p class="value" id="stat-views">0</p></div>
+    </div>
+
+    <div class="chip-row" id="chip-row">
+      <button class="chip active" data-filter="all">ທັງໝົດ</button>
+      <div id="chip-categories" style="display:contents"><!-- category chips injected by JS from CATEGORY_META --></div>
+    </div>
+
+    <div class="grid" id="video-grid">
+      <!-- Cards injected by JS from VIDEOS data (used for search results) -->
+    </div>
+
+    <div class="home-sections" id="home-sections">
+      <!-- One row per category injected by JS: heading + 1 latest video -->
+    </div>
+
+    <div class="category-view" id="category-view">
+      <div class="featured-video">
+        <p class="section-label">ວິດີໂອລ່າສຸດ</p>
+        <div id="featured-video-slot"><!-- featured card injected by JS --></div>
+      </div>
+      <div class="folder-section" id="folder-section">
+        <!-- folder card + grid injected by JS -->
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<div class="player-overlay" id="player-overlay">
+  <div class="player-box">
+    <div class="player-frame-wrap">
+      <iframe id="player-iframe" src="" title="video player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="player-info">
+      <div>
+        <h3 id="player-title"></h3>
+        <p id="player-meta"></p>
+        <a id="player-yt-link" class="player-yt-link" href="#" target="_blank" rel="noopener">
+          <i class="ti ti-brand-youtube"></i> ເປີດເບິ່ງໃນ YouTube
+        </a>
+      </div>
+      <button class="player-close" id="player-close" aria-label="ປິດ"><i class="ti ti-x"></i></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  //  ວິທີເພີ່ມ "ໝວດໝູ່" ໃໝ່ (New category)
+  //  ------------------------------------------------------------
+  //  1) ເພີ່ມ 1 ແຖວໃໝ່ໃນ CATEGORY_META ຂ້າງລຸ່ມນີ້ (key ຕ້ອງເປັນ
+  //     ຄຳສັບພາສາອັງກິດ ບໍ່ມີວັກ ບໍ່ມີເຄື່ອງໝາຍພິເສດ ເຊັ່ນ "training")
+  //       key: {
+  //         label: 'ຊື່ໝວດໝູ່ທີ່ຈະສະແດງ',
+  //         thumb: 'thumb-blue' | 'thumb-teal' | 'thumb-purple' | 'thumb-coral' | 'thumb-amber',
+  //         avatar: 'var(--blue-600)' | 'var(--teal-600)' | 'var(--purple-600)' | 'var(--coral-600)' | 'var(--amber-600)',
+  //         icon: ชื่อ icon จาก https://tabler.io/icons (พิมพ์ "ti-" นำหน้า)
+  //       }
+  //  2) ບໍ່ຕ້ອງໄປແກ້ sidebar ຫຼື chip ບ່ອນອື່ນ — ລະບົບຈະສ້າງໃຫ້ອັດຕະໂນມັດ
+  //  3) ຢ່າລືມເພີ່ມວິດີໂອຢ່າງໜ້ອຍ 1 ຄລິບໃນ VIDEOS ທີ່ໃຊ້ cat: 'key' ດຽວກັນ
+  //     ບໍ່ດັ່ງນັ້ນ ໝວດໝູ່ຈະຫວ່າງເປົ່າ
+  // ============================================================
+  var CATEGORY_META = {
+    company:  { label: 'Company Profile',                         thumb: 'thumb-blue',   avatar: 'var(--blue-600)',   icon: 'ti-building' },
+    employee: { label: 'ຂໍ້ກຳນົດ ແລະ ລະບຽບຂອງພະນັກງານ',            thumb: 'thumb-teal',   avatar: 'var(--teal-600)',   icon: 'ti-gavel' },
+    guide:    { label: 'ຄຳແນະນຳ',                                   thumb: 'thumb-purple', avatar: 'var(--purple-600)', icon: 'ti-book' },
+    policy:   { label: 'ນະໂຍບາຍຂອງ ຜ-ຟຟລ',                         thumb: 'thumb-coral',  avatar: 'var(--coral-600)',  icon: 'ti-shield-check' },
+    listed:   { label: 'ບໍລິສັດຈົດທະບຽນ',                           thumb: 'thumb-amber',  avatar: 'var(--amber-600)',  icon: 'ti-building-bank' }
+    // ตัวอย่างเพิ่มหมวดใหม่:
+    // training: { label: 'ຝຶກອົບຮົມ', thumb: 'thumb-blue', avatar: 'var(--blue-600)', icon: 'ti-school' }
+  };
+
+  // ============================================================
+  //  ວິທີເພີ່ມ "ວິດີໂອ" ໃໝ່ (New video)
+  //  ------------------------------------------------------------
+  //  ຄັດລອກແຖວໃດແຖວໜຶ່ງຂ້າງລຸ່ມນີ້ ແລ້ວແກ້ຂໍ້ມູນ:
+  //    { title: 'ຊື່ວິດີໂອ', cat: 'company', duration: '5 ນາທີ', date: '14 ສິງຫາ 2026', views: 0, url: 'https://www.youtube.com/watch?v=XXXXXXXXXXX' }
+  //  - cat        : ຕ້ອງກົງກັບ key ໃນ CATEGORY_META ຂ້າງເທິງ (ເຊັ່ນ 'company', 'employee', ...)
+  //  - url        : ວາງລິ້ງ YouTube ແບບໃດກໍໄດ້ (watch?v=, youtu.be/, shorts/ ລ້ວນໃຊ້ໄດ້)
+  //  - ວິດີໂອລ່າສຸດຂອງແຕ່ລະໝວດ = ວິດີໂອທຳອິດທີ່ພົບຂອງ cat ນັ້ນ (ຕາມລຳດັບໃນ array)
+  //    ດັ່ງນັ້ນ ຄວນ "ວາງວິດີໂອໃໝ່ໄວ້ເທິງສຸດ" ຂອງແຕ່ລະກຸ່ມ cat ນັ້ນໆ
+  // ============================================================
+  var VIDEOS = [
+    { title: 'ພາບລວມບໍລິສັດ', cat: 'company', duration: '8 ນາທີ 52 ວິນາທີ', date: '7 ສິງຫາ 2026', views: 486, url: 'https://www.youtube.com/watch?v=7WMXJJGyaDQ' },
+    { title: 'ເປີດຫ້ອງວາງສະແດງມູນເຊື້ອຂອງເຂື່ອນໄຟຟ້ານໍ້າງື່ມ 1 ຢ່າງເປັນທາງການ', cat: 'company', duration: '3 ນາທີ 40 ວິນາທີ', date: '7 ສິງຫາ 2026', views: 312, url: 'https://www.youtube.com/watch?v=NC0ts63RS8w' },
+    { title: 'EDL-Gen: ຜະລິດພະລັງງານເພື່ອປະເທດລາວ ຢ່າງຍືນຍົງ', cat: 'company', duration: '8 ນາທີ', date: '2 ມິຖຸນາ 2026', views: 259, url: 'https://www.youtube.com/watch?v=CMSus-_9Dug&list=PLtiGlSrjXkcbDEfXE8i-cu5YnHiwWOxkN&index=3' },
+
+    { title: 'ຄວາມປອດໄພຂອງເຂື່ອນໄຟຟ້າ ແມ່ນຫຍັງ?', cat: 'employee', duration: '4 ນາທີ 22 ວິນາທີ', date: '2 ມິຖຸນາ 2026', views: 941, url: 'https://www.youtube.com/watch?v=mR04OaWVxeI' },
+    { title: 'EDL-Gen ຕິດຕາມ ແລະ ກວດກາຄຸນນະພາບນ້ຳ ເພື່ອສ້າງຄວາມໝັ້ນໃຈດ້ານຄວາມປອດໄພ ແລະ ສິ່ງແວດລ້ອມ', cat: 'employee', duration: '3 ນາທີ 20 ວິນາທີ', date: '25 ພຶດສະພາ 2026', views: 604, url: 'https://www.youtube.com/watch?v=Bg1NmxirPQI' },
+    { title: 'ຜ-ຟຟລ ຈັດກິດຈະກຳ “ປູກຕົ້ນໄມ້ ແລະ ປ່ອຍປາ ປະຈຳປີ 2026”', cat: 'employee', duration: '3 ນາທີ 42 ວິນາທີ', date: '19 ພຶດສະພາ 2026', views: 478, url: 'https://www.youtube.com/watch?v=8zbeXr8W-0U' },
+
+    { title: 'EDL-Gen: 9 ເຫດຜົນສຳຄັນທີ່ພາເຮົາກ້າວສູ່ຄຸນນະພາບລະດັບໂລກ!', cat: 'guide', duration: '2 ນາທີ 20 ວິນາທີ', date: '14 ພຶດສະພາ 2026', views: 388, url: 'https://www.youtube.com/watch?v=jfeQI6gr7hM' },
+    { title: '12 ສິ່ງ ທີ່ທ່ານອາດຈະບໍ່ຮູ້ ກ່ຽວກັບເຂື່ອນໄຟຟ້ານໍ້າງື່ມ-1 ມີຫຍັງແດ່?', cat: 'guide', duration: '2 ນາທີ 40 ວິນາທີ', date: '5 ພຶດສະພາ 2026', views: 297, url: 'https://www.youtube.com/watch?v=nWHqEAvQHs8' },
+    { title: 'ຄໍາແນະນຳການລາຍງານເຫດການ', cat: 'guide', duration: '6 ນາທີ', date: '22 ເມສາ 2026', views: 214, url: 'https://youtu.be/YOUTUBE_ID_10' },
+
+    { title: 'ນະໂຍບາຍການປົກປ້ອງຂໍ້ມູນ', cat: 'policy', duration: '21 ນາທີ', date: '28 ເມສາ 2026', views: 356, url: 'https://youtu.be/YOUTUBE_ID_11' },
+    { title: 'ນະໂຍບາຍຕ້ານການສໍ້ລາດບັງຫຼວງ', cat: 'policy', duration: '15 ນາທີ', date: '10 ເມສາ 2026', views: 231, url: 'https://youtu.be/YOUTUBE_ID_12' },
+    { title: 'ນະໂຍບາຍການບໍລິຫານຄວາມສ່ຽງ', cat: 'policy', duration: '13 ນາທີ', date: '2 ເມສາ 2026', views: 189, url: 'https://youtu.be/YOUTUBE_ID_13' },
+
+    { title: 'ລະບຽບບໍລິສັດຈົດທະບຽນ', cat: 'listed', duration: '17 ນາທີ', date: '30 ມີນາ 2026', views: 275, url: 'https://youtu.be/YOUTUBE_ID_14' },
+    { title: 'ການເປີດເຜີຍຂໍ້ມູນຕໍ່ຕະຫຼາດຫຼັກຊັບ', cat: 'listed', duration: '10 ນາທີ', date: '18 ມີນາ 2026', views: 162, url: 'https://youtu.be/YOUTUBE_ID_15' },
+    { title: 'ຈັນຍາບັນນັກລົງທຶນສໍາພັນ', cat: 'listed', duration: '8 ນາທີ', date: '6 ມີນາ 2026', views: 140, url: 'https://youtu.be/YOUTUBE_ID_16' }
+
+    // ตัวอย่างเพิ่มวิดีโอใหม่ (คัดลอกไปวางแล้วแก้ข้อมูล อย่าลืมใส่ , คั่นก่อนบรรทัดนี้):
+    // ,{ title: 'ຊື່ວິດີໂອໃໝ່', cat: 'company', duration: '5 ນາທີ', date: '14 ສິງຫາ 2026', views: 0, url: 'https://www.youtube.com/watch?v=XXXXXXXXXXX' }
+  ];
+
+  // ---------- Build sidebar links + filter chips automatically from CATEGORY_META ----------
+  // ไม่ต้องแก้ตรงนี้ — ระบบนี้จะอ่าน CATEGORY_META ด้านบนแล้วสร้าง sidebar/chip ให้เอง
+  function renderSidebarAndChips() {
+    var sidebarContainer = document.getElementById('sidebar-categories');
+    var chipContainer = document.getElementById('chip-categories');
+    sidebarContainer.innerHTML = '';
+    chipContainer.innerHTML = '';
+
+    Object.keys(CATEGORY_META).forEach(function (cat) {
+      var meta = CATEGORY_META[cat];
+      var count = VIDEOS.filter(function (v) { return v.cat === cat; }).length;
+
+      var link = document.createElement('div');
+      link.className = 'side-link';
+      link.setAttribute('data-filter', cat);
+      link.innerHTML = '<i class="ti ' + meta.icon + '"></i><span class="lbl">' + meta.label + '</span><span class="count">' + count + '</span>';
+      sidebarContainer.appendChild(link);
+
+      var chip = document.createElement('button');
+      chip.className = 'chip';
+      chip.setAttribute('data-filter', cat);
+      chip.textContent = meta.label;
+      chipContainer.appendChild(chip);
+    });
+
+    document.getElementById('sidebar-total-label').textContent = VIDEOS.length + ' ວິດີໂອ';
+    document.getElementById('stat-total-videos').textContent = VIDEOS.length;
+    document.getElementById('stat-total-cats').textContent = Object.keys(CATEGORY_META).length;
+  }
+  renderSidebarAndChips();
+
+  function formatViews(n) {
+    if (n >= 1000) return (n / 1000).toFixed(1).replace('.0', '') + 'K';
+    return String(n);
+  }
+
+  // Accepts any pasted YouTube URL format (watch?v=, youtu.be/, embed/, shorts/)
+  // and returns just the video ID.
+  function extractYouTubeId(url) {
+    if (!url) return '';
+    var patterns = [
+      /(?:youtube\.com\/watch\?v=)([^&?/]+)/,
+      /(?:youtu\.be\/)([^&?/]+)/,
+      /(?:youtube\.com\/embed\/)([^&?/]+)/,
+      /(?:youtube\.com\/shorts\/)([^&?/]+)/
+    ];
+    for (var i = 0; i < patterns.length; i++) {
+      var m = url.match(patterns[i]);
+      if (m) return m[1];
+    }
+    return url; // fallback: assume they pasted a bare ID
+  }
+
+  var grid = document.getElementById('video-grid');
+  var categoryView = document.getElementById('category-view');
+  var featuredSlot = document.getElementById('featured-video-slot');
+  var folderSection = document.getElementById('folder-section');
+  var pageHeadingH1 = document.querySelector('.page-heading h1');
+  var pageHeadingP = document.querySelector('.page-heading p');
+  var DEFAULT_HEADING = { title: pageHeadingH1.textContent, sub: pageHeadingP.textContent };
+
+  // Videos are stored newest-first within each category, so the first
+  // match for a category is always its latest video.
+  function getCategoryVideos(cat) {
+    return VIDEOS.filter(function (v) { return v.cat === cat; });
+  }
+
+  function buildCardHTML(v, index) {
+    var meta = CATEGORY_META[v.cat];
+    var id = extractYouTubeId(v.url);
+    return (
+      '<div class="thumb ' + meta.thumb + '">' +
+        '<img class="cover" src="https://img.youtube.com/vi/' + id + '/hqdefault.jpg" alt="' + v.title + '" loading="lazy" onerror="this.remove()">' +
+        '<div class="cover-scrim"></div>' +
+        '<a class="yt-btn" aria-label="ເປີດໃນ YouTube" href="' + v.url + '" target="_blank" rel="noopener"><i class="ti ti-brand-youtube"></i></a>' +
+        '<div class="play"><i class="ti ti-player-play"></i></div>' +
+        '<div class="duration">' + v.duration + '</div>' +
+      '</div>' +
+      '<div class="meta">' +
+        '<div class="avatar" style="background:' + meta.avatar + '"><i class="ti ' + meta.icon + '"></i></div>' +
+        '<div>' +
+          '<p class="title">' + v.title + '</p>' +
+          '<p class="sub"><span class="tag-inline">' + meta.label + '</span> • ' + v.date + '</p>' +
+          '<p class="sub views"><i class="ti ti-eye"></i>' + formatViews(v.views) + ' ຄັ້ງ</p>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function makeCardEl(v, extraClass) {
+    var index = VIDEOS.indexOf(v);
+    var card = document.createElement('div');
+    card.className = 'card' + (extraClass ? ' ' + extraClass : '');
+    card.setAttribute('data-index', index);
+    card.innerHTML = buildCardHTML(v, index);
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('.yt-btn')) return; // let the direct YouTube link work normally
+      openPlayer(v);
+    });
+    return card;
+  }
+
+  // ---------- Flat grid (used for search results, in any scope) ----------
+  function renderFlatGrid(filter, q) {
+    grid.innerHTML = '';
+    var shown = 0;
+
+    VIDEOS.forEach(function (v) {
+      var matchesFilter = (filter === 'all' || v.cat === filter);
+      var matchesQuery = q === '' || v.title.toLowerCase().indexOf(q) !== -1;
+      if (!matchesFilter || !matchesQuery) return;
+      shown++;
+      grid.appendChild(makeCardEl(v));
+    });
+
+    if (shown === 0) {
+      grid.innerHTML = '<div class="empty-state"><i class="ti ti-video-off"></i><p>ບໍ່ພົບວິດີໂອທີ່ກົງກັບການຄົ້ນຫາ</p></div>';
+    }
+  }
+
+  // ---------- Home ("ທັງໝົດ"): 1 row per category, 1 latest video per row ----------
+  var homeSectionsEl = document.getElementById('home-sections');
+
+  function renderHomeSections() {
+    homeSectionsEl.innerHTML = '';
+
+    Object.keys(CATEGORY_META).forEach(function (cat) {
+      var meta = CATEGORY_META[cat];
+      var vids = getCategoryVideos(cat);
+      if (vids.length === 0) return;
+      var latest = vids[0];
+
+      var section = document.createElement('div');
+      section.className = 'home-section';
+
+      var header = document.createElement('div');
+      header.className = 'home-section-header';
+      header.innerHTML =
+        '<p class="home-section-title">' +
+          '<span class="cat-icon" style="background:' + meta.avatar + '"><i class="ti ' + meta.icon + '"></i></span>' +
+          '<span class="lbl-text">' + meta.label + '</span>' +
+        '</p>' +
+        (vids.length > 1
+          ? '<span class="see-all" data-goto="' + cat + '">ເບິ່ງທັງໝົດ (' + vids.length + ')<i class="ti ti-chevron-right"></i></span>'
+          : '');
+      section.appendChild(header);
+
+      var id = extractYouTubeId(latest.url);
+      var ccard = document.createElement('div');
+      ccard.className = 'compact-card';
+      ccard.innerHTML =
+        '<div class="thumb ' + meta.thumb + '">' +
+          '<img class="cover" src="https://img.youtube.com/vi/' + id + '/hqdefault.jpg" alt="' + latest.title + '" loading="lazy" onerror="this.remove()">' +
+          '<div class="cover-scrim"></div>' +
+          '<a class="yt-btn" aria-label="ເປີດໃນ YouTube" href="' + latest.url + '" target="_blank" rel="noopener"><i class="ti ti-brand-youtube"></i></a>' +
+          '<div class="play"><i class="ti ti-player-play"></i></div>' +
+          '<div class="duration">' + latest.duration + '</div>' +
+        '</div>' +
+        '<div class="compact-body">' +
+          '<p class="title">' + latest.title + '</p>' +
+          '<p class="sub"><i class="ti ti-calendar"></i>' + latest.date + '</p>' +
+          '<p class="sub"><i class="ti ti-eye"></i>' + formatViews(latest.views) + ' ຄັ້ງ</p>' +
+        '</div>';
+      ccard.addEventListener('click', function (e) {
+        if (e.target.closest('.yt-btn')) return;
+        openPlayer(latest);
+      });
+      section.appendChild(ccard);
+
+      homeSectionsEl.appendChild(section);
+    });
+
+    // "ເບິ່ງທັງໝົດ" jumps straight into that category's page
+    homeSectionsEl.querySelectorAll('.see-all[data-goto]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        setActiveFilter(el.getAttribute('data-goto'));
+      });
+    });
+  }
+
+  // ---------- Category page: featured latest video + "ວີດີໂອທີ່ຜ່ານມາ" folder ----------
+  function renderCategoryPage(cat) {
+    var meta = CATEGORY_META[cat];
+    var vids = getCategoryVideos(cat);
+
+    if (vids.length === 0) {
+      featuredSlot.innerHTML = '<div class="empty-state"><i class="ti ti-video-off"></i><p>ຍັງບໍ່ມີວິດີໂອໃນໝວດໝູ່ນີ້</p></div>';
+      folderSection.innerHTML = '';
+      return;
+    }
+
+    var latest = vids[0];
+    var past = vids.slice(1);
+
+    // Featured (latest) video
+    featuredSlot.innerHTML = '';
+    var fcard = document.createElement('div');
+    fcard.className = 'featured-card';
+    var id = extractYouTubeId(latest.url);
+    fcard.innerHTML =
+      '<div class="thumb ' + meta.thumb + '">' +
+        '<img class="cover" src="https://img.youtube.com/vi/' + id + '/hqdefault.jpg" alt="' + latest.title + '" loading="lazy" onerror="this.remove()">' +
+        '<div class="cover-scrim"></div>' +
+        '<a class="yt-btn" aria-label="ເປີດໃນ YouTube" href="' + latest.url + '" target="_blank" rel="noopener"><i class="ti ti-brand-youtube"></i></a>' +
+        '<div class="play"><i class="ti ti-player-play"></i></div>' +
+        '<div class="duration">' + latest.duration + '</div>' +
+      '</div>' +
+      '<div class="featured-body">' +
+        '<p class="title">' + latest.title + '</p>' +
+        '<p class="sub"><i class="ti ' + meta.icon + '"></i>' + meta.label + '</p>' +
+        '<p class="sub"><i class="ti ti-calendar"></i>' + latest.date + '</p>' +
+        '<p class="sub"><i class="ti ti-eye"></i>' + formatViews(latest.views) + ' ຄັ້ງ</p>' +
+      '</div>';
+    fcard.addEventListener('click', function (e) {
+      if (e.target.closest('.yt-btn')) return;
+      openPlayer(latest);
+    });
+    featuredSlot.appendChild(fcard);
+
+    // "ວີດີໂອທີ່ຜ່ານມາ" (past videos) folder
+    folderSection.innerHTML = '';
+    if (past.length === 0) {
+      return; // nothing else to show, only one video exists in this category
+    }
+
+    var folderCard = document.createElement('div');
+    folderCard.className = 'folder-card';
+    folderCard.id = 'folder-toggle';
+    folderCard.innerHTML =
+      '<div class="folder-icon"><i class="ti ti-folder"></i></div>' +
+      '<div class="folder-text">' +
+        '<p class="name">ວີດີໂອທີ່ຜ່ານມາ</p>' +
+        '<p class="count">' + past.length + ' ວິດີໂອ</p>' +
+      '</div>' +
+      '<i class="ti ti-chevron-right folder-chevron"></i>';
+
+    var folderGrid = document.createElement('div');
+    folderGrid.className = 'folder-grid';
+    folderGrid.id = 'folder-grid';
+    past.forEach(function (v) {
+      folderGrid.appendChild(makeCardEl(v));
+    });
+
+    folderCard.addEventListener('click', function () {
+      var isOpen = folderCard.classList.toggle('open');
+      folderGrid.classList.toggle('open', isOpen);
+      var icon = folderCard.querySelector('.folder-icon i');
+      icon.className = isOpen ? 'ti ti-folder-open' : 'ti ti-folder';
+    });
+
+    folderSection.appendChild(folderCard);
+    folderSection.appendChild(folderGrid);
+  }
+
+  function updateHeading(filter) {
+    if (filter === 'all') {
+      pageHeadingH1.textContent = DEFAULT_HEADING.title;
+      pageHeadingP.textContent = DEFAULT_HEADING.sub;
+    } else {
+      var meta = CATEGORY_META[filter];
+      pageHeadingH1.textContent = meta.label;
+      pageHeadingP.textContent = 'ວິດີໂອລ່າສຸດ ແລະ ວິດີໂອທີ່ຜ່ານມາໃນໝວດໝູ່ນີ້';
+    }
+  }
+
+  function renderGrid(filter, query) {
+    var q = (query || '').trim().toLowerCase();
+
+    if (q !== '') {
+      // Search overrides the featured/folder/home layout - show a flat, filterable grid.
+      categoryView.style.display = 'none';
+      homeSectionsEl.style.display = 'none';
+      grid.style.display = 'grid';
+      updateHeading(filter);
+      renderFlatGrid(filter, q);
+      return;
+    }
+
+    if (filter === 'all') {
+      categoryView.style.display = 'none';
+      grid.style.display = 'none';
+      homeSectionsEl.style.display = 'grid';
+      updateHeading(filter);
+      renderHomeSections();
+    } else {
+      grid.style.display = 'none';
+      homeSectionsEl.style.display = 'none';
+      categoryView.style.display = 'block';
+      updateHeading(filter);
+      renderCategoryPage(filter);
+    }
+  }
+
+  // ---------- Video player modal ----------
+  var overlay = document.getElementById('player-overlay');
+  var iframe = document.getElementById('player-iframe');
+  var playerTitle = document.getElementById('player-title');
+  var playerMeta = document.getElementById('player-meta');
+  var playerYtLink = document.getElementById('player-yt-link');
+
+  function openPlayer(v) {
+    var meta = CATEGORY_META[v.cat];
+    var id = extractYouTubeId(v.url);
+    iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+    playerTitle.textContent = v.title;
+    playerMeta.textContent = meta.label + ' • ' + v.date + ' • ' + formatViews(v.views) + ' ຄັ້ງ';
+    playerYtLink.href = v.url;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePlayer() {
+    overlay.classList.remove('open');
+    iframe.src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('player-close').addEventListener('click', closePlayer);
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) closePlayer();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closePlayer();
+  });
+
+  var currentFilter = 'all';
+
+  function setActiveFilter(filter) {
+    currentFilter = filter;
+    document.querySelectorAll('.side-link[data-filter]').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-filter') === filter);
+    });
+    document.querySelectorAll('.chip[data-filter]').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-filter') === filter);
+    });
+    renderGrid(currentFilter, document.getElementById('search-input').value);
+  }
+
+  document.querySelectorAll('.side-link[data-filter]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      setActiveFilter(el.getAttribute('data-filter'));
+      if (window.innerWidth <= 860) {
+        document.getElementById('sidebar').classList.remove('mobile-open');
+      }
+    });
+  });
+
+  document.querySelectorAll('.chip[data-filter]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      setActiveFilter(el.getAttribute('data-filter'));
+    });
+  });
+
+  document.getElementById('search-input').addEventListener('input', function (e) {
+    renderGrid(currentFilter, e.target.value);
+  });
+
+  document.getElementById('menu-toggle').addEventListener('click', function () {
+    var sidebar = document.getElementById('sidebar');
+    if (window.innerWidth <= 860) {
+      sidebar.classList.toggle('mobile-open');
+    } else {
+      sidebar.classList.toggle('collapsed');
+    }
+  });
+
+  document.getElementById('upload-btn').addEventListener('click', function () {
+    alert(
+      'ປຸ່ມນີ້ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ລະບົບເພີ່ມລິ້ງອັດຕະໂນມັດ (ເວັບນີ້ບໍ່ມີຖານຂໍ້ມູນ)\n\n' +
+      'ວິທີເພີ່ມວິດີໂອ: ເປີດໄຟລ໌ index.html → ຄົ້ນຫາ "var VIDEOS" → ' +
+      'ຄັດລອກແຖວໃດແຖວໜຶ່ງແລ້ວແກ້ title, cat, url, date ຕາມວິດີໂອໃໝ່ ' +
+      '→ ບັນທຶກ ແລະ deploy ຂຶ້ນໃໝ່'
+    );
+  });
+  document.getElementById('new-category-btn').addEventListener('click', function () {
+    alert(
+      'ປຸ່ມນີ້ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ລະບົບສ້າງໝວດໝູ່ອັດຕະໂນມັດ (ເວັບນີ້ບໍ່ມີຖານຂໍ້ມູນ)\n\n' +
+      'ວິທີເພີ່ມໝວດໝູ່: ເປີດໄຟລ໌ index.html → ຄົ້ນຫາ "var CATEGORY_META" → ' +
+      'ເພີ່ມ 1 ແຖວໃໝ່ (key, label, thumb, avatar, icon) ' +
+      '→ ຢ່າລືມເພີ່ມວິດີໂອທີ່ໃຊ້ cat ດຽວກັນໃນ VIDEOS ດ້ວຍ → ບັນທຶກ ແລະ deploy ຂຶ້ນໃໝ່'
+    );
+  });
+
+  var totalViews = VIDEOS.reduce(function (sum, v) { return sum + v.views; }, 0);
+  document.getElementById('stat-views').textContent = formatViews(totalViews);
+
+  renderGrid('all', '');
+</script>
+
+</body>
+</html>

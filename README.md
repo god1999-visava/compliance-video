@@ -80,3 +80,4 @@ export default function handler(req, res) {
 
 จากนั้นฝั่ง frontend เรียกใช้ด้วย `fetch('/api/videos')` ได้ทันที โดยไม่ต้องตั้งค่า
 CORS หรือ base URL เพิ่มเติม เพราะ frontend กับ API อยู่โดเมนเดียวกัน
+# hong_lao
